@@ -24,7 +24,7 @@ gltfLoader.load('/skincell/scene.gltf', (gltfScene) => {
     // gltfScene.scene.rotation.y = Math.PI / 8;
     //gltfScene.scene.position.y = 0;
     var mesh = gltfScene.scene;
-    //mesh.scale.set(5, 5, 5);
+    //mesh.scale.set(2, 2, 2);
     var box = new THREE.Box3().setFromObject( mesh );
     box.center( mesh.position ); // this re-sets the mesh position
     mesh.position.multiplyScalar( - 1 );
@@ -34,7 +34,7 @@ gltfLoader.load('/skincell/scene.gltf', (gltfScene) => {
 // Secondary Model
 const secondaryModel = new THREE.Group();
 secondaryModel.visible = false;
-secondaryModel.position.set(-4, 0, 0)
+secondaryModel.position.set(-5, 0, 0)
 scene.add(secondaryModel);
 
 const gltfLoader2 = new GLTFLoader();
@@ -89,15 +89,15 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 50
+camera.position.x = 50;
 camera.position.y = 0
 camera.position.z = 0
 scene.add(camera)
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
-controls.minDistance = 0;
+//controls.enableDamping = true
+
 controls.maxDistance = 50;
 
 /**
@@ -116,30 +116,30 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 const clock = new THREE.Clock()
 
+
 const tick = () =>
 {
 
     const elapsedTime = clock.getElapsedTime()
-
-    // Update objects
-    skinModel.rotation.y = .05 * elapsedTime
     
     // Update Orbital Controls
     controls.update()
-
-    // Calculate distance from camera to skinModel
-    const distance = camera.position.distanceTo(skinModel.position);
-
-    // If the camera is close enough, reveal the secondary model
-    if (distance < 1) { //try basing it on zoom instead of distance
-        secondaryModel.visible = true;
-        skinModel.visible = false
-        controls.target.copy(secondaryModel.position);
+    if (controls.target.distanceTo(skinModel.position) === 0) {
+        skinModel.rotation.y = .05 * elapsedTime
+        const distance = camera.position.distanceTo(skinModel.position)
+        if (distance < 5) {
+            skinModel.visible = false
+            secondaryModel.visible = true;
+            controls.target.copy(secondaryModel.position);
+        }
         
-    } else {
-        secondaryModel.visible = false;
-        skinModel.visible = true
-        controls.target.copy(skinModel.position);
+    } else if (controls.target.distanceTo(secondaryModel.position) === 0) {
+        const distance = camera.position.distanceTo(secondaryModel.position)
+        if (distance > 5) {
+            skinModel.visible = true
+            secondaryModel.visible = false;
+            controls.target.copy(skinModel.position);
+        }
     }
 
     // Render
@@ -147,6 +147,7 @@ const tick = () =>
 
     // Call tick again on the next frame
     window.requestAnimationFrame(tick)
+    
 }
 
 tick()
