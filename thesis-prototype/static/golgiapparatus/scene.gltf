@@ -1,0 +1,313 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 24554,
+      "max": [
+        0.7548840045928955,
+        1.4555200338363647,
+        0.8333296775817871
+      ],
+      "min": [
+        -1.0814460515975952,
+        -1.456207036972046,
+        -0.37123438715934753
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 294648,
+      "componentType": 5126,
+      "count": 24554,
+      "max": [
+        1.0,
+        0.999571681022644,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 24554,
+      "max": [
+        1.0,
+        1.0
+      ],
+      "min": [
+        0.013144370168447495,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 136896,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 589296,
+      "componentType": 5126,
+      "count": 4510,
+      "max": [
+        22.916000366210938,
+        17.040529251098633,
+        3.2893710136413574
+      ],
+      "min": [
+        -1.0968140363693237,
+        -6.0123162269592285,
+        -8.006567001342773
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 643416,
+      "componentType": 5126,
+      "count": 4510,
+      "max": [
+        0.999960720539093,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -0.999960720539093,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 196432,
+      "componentType": 5126,
+      "count": 4510,
+      "max": [
+        1.0,
+        0.47238200902938843
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 547584,
+      "componentType": 5125,
+      "count": 21120,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "MajoraMaster (https://sketchfab.com/MajoraMaster)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/golgi-apparatuscomplex-f9a893dac37e43a487bc92e7f828db50",
+      "title": "Golgi Apparatus/Complex"
+    },
+    "generator": "Sketchfab-14.54.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 632064,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 232512,
+      "byteOffset": 632064,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 697536,
+      "byteOffset": 864576,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 1562112,
+      "uri": "scene.bin"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "vesicles",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.903522,
+          0.424469,
+          0.088324,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "material",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.8,
+          0.670406,
+          0.311055,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "GA-material",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "vesicles-material",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 5,
+            "POSITION": 4,
+            "TEXCOORD_0": 6
+          },
+          "indices": 7,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2,
+        4
+      ],
+      "name": "Collada visual scene group"
+    },
+    {
+      "children": [
+        3
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.03192711,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "GA"
+    },
+    {
+      "mesh": 0,
+      "name": "GA-material"
+    },
+    {
+      "children": [
+        5
+      ],
+      "matrix": [
+        0.1067234,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.1067234,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.1067234,
+        0.0,
+        -1.320581,
+        -0.6138433,
+        0.3749374,
+        1.0
+      ],
+      "name": "vesicles"
+    },
+    {
+      "mesh": 1,
+      "name": "vesicles-material"
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Mitochondria - Cell Organelles
+* source:	https://sketchfab.com/3d-models/mitochondria-cell-organelles-397631a85faa487ba1f1cc4fe5e1b7e3
+* author:	Vida Systems (https://sketchfab.com/objects1)
+
+Model License:
+* license type:	CC-BY-NC-ND-4.0 (http://creativecommons.org/licenses/by-nc-nd/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions can not be distributed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Mitochondria - Cell Organelles" (https://sketchfab.com/3d-models/mitochondria-cell-organelles-397631a85faa487ba1f1cc4fe5e1b7e3) by Vida Systems (https://sketchfab.com/objects1) licensed under CC-BY-NC-ND-4.0 (http://creativecommons.org/licenses/by-nc-nd/4.0/)

@@ -15,37 +15,43 @@ const scene = new THREE.Scene()
 
 // Objects
 
-const loader = new GLTFLoader();
+// Base Model
+const skinModel = new THREE.Group();
+scene.add(skinModel);
 
-loader.load('./assets/skin_cell/scene.gltf', function ( gltf ) {
+const gltfLoader = new GLTFLoader();
+gltfLoader.load('/skincell/scene.gltf', (gltfScene) => {
+    // gltfScene.scene.rotation.y = Math.PI / 8;
+    //gltfScene.scene.position.y = 0;
+    var mesh = gltfScene.scene;
+    //mesh.scale.set(5, 5, 5);
+    var box = new THREE.Box3().setFromObject( mesh );
+    box.center( mesh.position ); // this re-sets the mesh position
+    mesh.position.multiplyScalar( - 1 );
+    skinModel.add(mesh);
+});
 
-	scene.add( gltf.scene );
+// Secondary Model
+const secondaryModel = new THREE.Group();
+secondaryModel.visible = false;
+secondaryModel.position.set(-4, 0, 0)
+scene.add(secondaryModel);
 
-}, undefined, function ( error ) {
-
-	console.error( error );
-
-} );
-
-// const gltfLoader = new GLTFLoader();
-// gltfLoader.load('./assets/skin_cell/scene.gltf', (gltfScene) => {
-//     // gltfScene.scene.rotation.y = Math.PI / 8;
-//     // gltfScene.scene.position.y = 3;
-//     // gltfScene.scene.scale.set(10, 10, 10);
-//     scene.add(gltfScene.scene);
-// });
-// const geometry = new THREE.SphereBufferGeometry(.5, 64, 64);
-
-// Materials
-
-// const material = new THREE.MeshStandardMaterial()
-// material.metalness = 0.7
-// material.roughness = 0.2
-// material.color = new THREE.Color(0x292929)
-
-// Mesh
-// const sphere = new THREE.Mesh(geometry,material)
-// scene.add(sphere)
+const gltfLoader2 = new GLTFLoader();
+gltfLoader2.load('/golgiapparatus/scene.gltf', (gltfScene) => {
+    var mesh = gltfScene.scene;
+    //mesh.scale.set(5, 5, 5);
+    var box = new THREE.Box3().setFromObject( mesh );
+    box.center( mesh.position ); // this re-sets the mesh position
+    mesh.position.multiplyScalar( - 1 );
+    skinModel.add(mesh);
+    
+    /*
+    gltfScene.scene.rotation.y = Math.PI / 8;
+    gltfScene.scene.position.y = 3;
+    gltfScene.scene.scale.set(5, 5, 5);*/
+    secondaryModel.add(gltfScene.scene);
+});
 
 // Lights
 
@@ -83,14 +89,16 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 0
+camera.position.x = 50
 camera.position.y = 0
-camera.position.z = 2
+camera.position.z = 0
 scene.add(camera)
 
 // Controls
-// const controls = new OrbitControls(camera, canvas)
-// controls.enableDamping = true
+const controls = new OrbitControls(camera, canvas)
+controls.enableDamping = true
+controls.minDistance = 0;
+controls.maxDistance = 50;
 
 /**
  * Renderer
@@ -114,10 +122,25 @@ const tick = () =>
     const elapsedTime = clock.getElapsedTime()
 
     // Update objects
-    sphere.rotation.y = .5 * elapsedTime
-
+    skinModel.rotation.y = .05 * elapsedTime
+    
     // Update Orbital Controls
-    // controls.update()
+    controls.update()
+
+    // Calculate distance from camera to skinModel
+    const distance = camera.position.distanceTo(skinModel.position);
+
+    // If the camera is close enough, reveal the secondary model
+    if (distance < 1) { //try basing it on zoom instead of distance
+        secondaryModel.visible = true;
+        skinModel.visible = false
+        controls.target.copy(secondaryModel.position);
+        
+    } else {
+        secondaryModel.visible = false;
+        skinModel.visible = true
+        controls.target.copy(skinModel.position);
+    }
 
     // Render
     renderer.render(scene, camera)
