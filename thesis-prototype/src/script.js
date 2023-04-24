@@ -13,25 +13,39 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+// Data
+// fetch('/diagnosis_stories.json')
+//     .then((response) => response.json())
+//     .then((json) => console.log(json));
+
+const contributors = [
+    { contributorId: 1 },
+    { contributorId: 2 },
+    { contributorId: 3 },
+    { contributorId: 4 },
+    { contributorId: 5 },
+    { contributorId: 6 },
+];
+
 // Objects
 
-// Base Model
+// Skin Model
 const skinModel = new THREE.Group();
 scene.add(skinModel);
 
 const gltfLoader = new GLTFLoader();
 gltfLoader.load('/skincell/scene.gltf', (gltfScene) => {
-    // gltfScene.scene.rotation.y = Math.PI / 8;
-    //gltfScene.scene.position.y = 0;
     var mesh = gltfScene.scene;
-    //mesh.scale.set(2, 2, 2);
+
+    // Enclosing model in a box and centering
     var box = new THREE.Box3().setFromObject( mesh );
     box.center( mesh.position ); // this re-sets the mesh position
     mesh.position.multiplyScalar( - 1 );
+
     skinModel.add(mesh);
 });
 
-// Secondary Model
+// Melanocyte? Model
 const secondaryModel = new THREE.Group();
 secondaryModel.visible = false;
 secondaryModel.position.set(-5, 0, 0)
@@ -40,17 +54,31 @@ scene.add(secondaryModel);
 const gltfLoader2 = new GLTFLoader();
 gltfLoader2.load('/golgiapparatus/scene.gltf', (gltfScene) => {
     var mesh = gltfScene.scene;
-    //mesh.scale.set(5, 5, 5);
     var box = new THREE.Box3().setFromObject( mesh );
     box.center( mesh.position ); // this re-sets the mesh position
     mesh.position.multiplyScalar( - 1 );
-    skinModel.add(mesh);
-    
-    /*
-    gltfScene.scene.rotation.y = Math.PI / 8;
-    gltfScene.scene.position.y = 3;
-    gltfScene.scene.scale.set(5, 5, 5);*/
-    secondaryModel.add(gltfScene.scene);
+
+    secondaryModel.add(mesh);
+
+    contributors.forEach(contributor => {
+        // Check if sphere already exists for contributor
+        const sphereExists = scene.getObjectByName(`sphere-${contributor.contributorId}`)
+
+        // If sphere doesn't exist
+        if (!sphereExists) {
+            // Create sphere
+            const sphereGeometry = new THREE.SphereGeometry(0.1, 32, 16);
+            const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
+            sphereMesh.position.x = THREE.MathUtils.randFloat(box.min.x, box.max.x);
+            sphereMesh.position.y = THREE.MathUtils.randFloat(box.min.y, box.max.y);
+            sphereMesh.position.z = THREE.MathUtils.randFloat(box.min.z, box.max.z);
+            sphereMesh.name = `sphere-${contributor.contributorId}`;
+
+            // Store spheres within secondaryModel group
+            secondaryModel.add(sphereMesh);
+        }
+    });
 });
 
 // Lights
@@ -121,14 +149,20 @@ const tick = () =>
 {
 
     const elapsedTime = clock.getElapsedTime()
+
+    // Add spheres for contributors
+   
     
     // Update Orbital Controls
     controls.update()
     if (controls.target.distanceTo(skinModel.position) === 0) {
+        // Rotate Skin Model
         skinModel.rotation.y = .05 * elapsedTime
+    
+        // Switch visibility and target depending on distance from camera
         const distance = camera.position.distanceTo(skinModel.position)
         if (distance < 5) {
-            skinModel.visible = false
+            skinModel.visible = false;
             secondaryModel.visible = true;
             controls.target.copy(secondaryModel.position);
         }
@@ -136,7 +170,7 @@ const tick = () =>
     } else if (controls.target.distanceTo(secondaryModel.position) === 0) {
         const distance = camera.position.distanceTo(secondaryModel.position)
         if (distance > 5) {
-            skinModel.visible = true
+            skinModel.visible = true;
             secondaryModel.visible = false;
             controls.target.copy(skinModel.position);
         }
