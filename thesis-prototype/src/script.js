@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as dat from 'dat.gui'
+import * as data from '../diagnosis_stories.json'
 
 // Debug
 const gui = new dat.GUI() 
@@ -12,20 +13,6 @@ const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
-
-// Data
-// fetch('/diagnosis_stories.json')
-//     .then((response) => response.json())
-//     .then((json) => console.log(json));
-
-const contributors = [
-    { contributorId: 1 },
-    { contributorId: 2 },
-    { contributorId: 3 },
-    { contributorId: 4 },
-    { contributorId: 5 },
-    { contributorId: 6 },
-];
 
 // Objects
 
@@ -59,16 +46,17 @@ gltfLoader2.load('/golgiapparatus/scene.gltf', (gltfScene) => {
     mesh.position.multiplyScalar( - 1 );
 
     secondaryModel.add(mesh);
-
-    contributors.forEach(contributor => {
+    
+    // Loop through JSON data
+    data.contributors.forEach(contributor => {
         // Check if sphere already exists for contributor
         const sphereExists = scene.getObjectByName(`sphere-${contributor.contributorId}`)
 
         // If sphere doesn't exist
         if (!sphereExists) {
             // Create sphere
-            const sphereGeometry = new THREE.SphereGeometry(0.1, 32, 16);
-            const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const sphereGeometry = new THREE.SphereGeometry(0.05, 32, 16);
+            const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xFFC0CB });
             const sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
             sphereMesh.position.x = THREE.MathUtils.randFloat(box.min.x, box.max.x);
             sphereMesh.position.y = THREE.MathUtils.randFloat(box.min.y, box.max.y);
