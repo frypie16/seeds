@@ -19,3 +19,11 @@ body
     left: 0;
     outline: none;
 }
+
+#box {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    opacity: 1;
+  }
