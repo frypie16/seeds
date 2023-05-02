@@ -10,19 +10,21 @@ const gui = new dat.GUI()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
-const box = document.getElementById('box')
+let textBox = document.getElementById('box')
 
 // Scene
 const scene = new THREE.Scene()
 
 // Objects
 
-// Skin Model
+// First Scene
 const skinModel = new THREE.Group();
+// skinModel.position.set(47, 0, 0);
 scene.add(skinModel);
 
+//Skin Model
 const gltfLoader = new GLTFLoader();
-gltfLoader.load('/skincell/scene.gltf', (gltfScene) => {
+gltfLoader.load('/mannequin/wateringMannequin.gltf', (gltfScene) => {
     var mesh = gltfScene.scene;
 
     // Enclosing model in a box and centering
@@ -30,18 +32,55 @@ gltfLoader.load('/skincell/scene.gltf', (gltfScene) => {
     box.center( mesh.position ); // this re-sets the mesh position
     mesh.position.multiplyScalar( - 1 );
 
+    const mixer = new THREE.AnimationMixer(gltfScene.scene);
+
+    // find the animation clip you want to play
+    const clip = gltfScene.animations.find(animation => animation.name === 'Watering');
+
+    if (clip) {
+        // create an animation action from the clip
+        const action = mixer.clipAction(clip);
+
+        // set the action to loop
+        action.loop = THREE.LoopRepeat;
+
+        // play the animation action
+        action.play();
+
+        // add the mesh to the scene and start the animation mixer
+        skinModel.add(mesh);
+        mixer.timeScale = 1; // adjust animation speed
+        mixer.update(0);
+    } else {
+        console.log('Animation not found.');
+    }
+
+	// var action = mixer.clipAction( gltfScene.animations[ 0 ] );
+	// action.play();
+
+    // skinModel.add(mesh);
+});
+
+//Greenhouse
+const gltfLoader2 = new GLTFLoader();
+gltfLoader2.load('/greenhouse/scene.gltf', (gltfScene) => {
+    var mesh = gltfScene.scene;
+    var box = new THREE.Box3().setFromObject( mesh );
+    box.center( mesh.position ); // this re-sets the mesh position
+    mesh.position.multiplyScalar( - 1 );
+
     skinModel.add(mesh);
 });
 
-// Melanocyte? Model
+// Second Scene
 const secondaryModel = new THREE.Group();
 secondaryModel.visible = false;
 secondaryModel.position.set(-5, 0, 0)
 scene.add(secondaryModel);
 
-const gltfLoader2 = new GLTFLoader();
-
-gltfLoader2.load('/golgiapparatus/scene.gltf', (gltfScene) => {
+//Melanocyte? Model
+const gltfLoader3 = new GLTFLoader();
+gltfLoader3.load('/golgiapparatus/scene.gltf', (gltfScene) => {
     var mesh = gltfScene.scene;
     var box = new THREE.Box3();
     box.setFromObject( mesh );
@@ -65,17 +104,10 @@ gltfLoader2.load('/golgiapparatus/scene.gltf', (gltfScene) => {
             sphereMesh.position.y = THREE.MathUtils.randFloat(box.min.y, box.max.y);
             sphereMesh.position.z = THREE.MathUtils.randFloat(box.min.z, box.max.z);
             sphereMesh.name = `sphere-${contributor.contributorId}`;
-
-            // Create textbox mesh
-            const textboxGeometry = new THREE.PlaneGeometry(2, 1);
-            const textboxMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
-            const textboxMesh = new THREE.Mesh(textboxGeometry, textboxMaterial);
-            textboxMesh.position.copy(sphereMesh.position);
-            textboxMesh.visible = false; // Start with textbox hidden
+            sphereMesh.data = data.contributors[contributor.contributorId]
 
             // Store spheres within secondaryModel group
             secondaryModel.add(sphereMesh);
-            // secondaryModel.add(textboxMesh);
         }
     });
 });
@@ -83,10 +115,46 @@ gltfLoader2.load('/golgiapparatus/scene.gltf', (gltfScene) => {
 // Lights
 
 const pointLight = new THREE.PointLight(0xffffff, 0.1)
-pointLight.position.x = 2
-pointLight.position.y = 3
-pointLight.position.z = 4
+pointLight.position.x = 2;
+pointLight.position.y = 3;
+pointLight.position.z = 4;
 scene.add(pointLight)
+
+const pointLightGeometry = new THREE.SphereGeometry( 0.2 );
+const pointLightMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff } ); //white
+const pointLightMesh = new THREE.Mesh( pointLightGeometry, pointLightMaterial );
+pointLightMesh.position.copy( pointLight.position );
+scene.add( pointLightMesh );
+
+// create an ambient light
+const ambientLight = new THREE.AmbientLight( 0xffffff, 0.3 );
+scene.add( ambientLight );
+
+const ambientLightGeometry = new THREE.SphereGeometry( 0.3 );
+const ambientLightMaterial = new THREE.MeshBasicMaterial( { color: 0xFF8440 } ); //orange
+const ambientLightMesh = new THREE.Mesh( ambientLightGeometry, ambientLightMaterial );
+scene.add( ambientLightMesh ); // don't position ambient light mesh
+
+// create a directional light
+const directionalLight = new THREE.DirectionalLight( 0xffffff, 2.5 );
+directionalLight.position.set( -4, 10, -2 );
+scene.add( directionalLight );
+
+const directionalLightGeometry = new THREE.SphereGeometry( 0.2 );
+const directionalLightMaterial = new THREE.MeshBasicMaterial( { color: 0x02D46E } ); //green
+const directionalLightMesh = new THREE.Mesh( directionalLightGeometry, directionalLightMaterial );
+directionalLightMesh.position.copy( directionalLight.position );
+scene.add( directionalLightMesh );
+
+// sky color ground color intensity 
+const hemiLight = new THREE.HemisphereLight( 0x0000ff, 0x00ff00, 0.6 ); 
+scene.add( hemiLight );
+
+const hemiLightGeometry = new THREE.SphereGeometry( 0.2 );
+const hemiLightMaterial = new THREE.MeshBasicMaterial( { color: 0xFDE600 } ); //yellow
+const hemiLightMesh = new THREE.Mesh( hemiLightGeometry, hemiLightMaterial );
+hemiLightMesh.position.copy( hemiLight.position );
+scene.add( hemiLightMesh );
 
 /**
  * Sizes
@@ -123,7 +191,6 @@ scene.add(camera)
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
-//controls.enableDamping = true
 
 controls.maxDistance = 50;
 
@@ -147,11 +214,35 @@ const mouse = new THREE.Vector2();
 
 var intersectedObject = null;
 
+let selectedSphere = null;
+
 function onMouseMove(event) {
     // calculate mouse position in normalized device coordinates
     // (-1 to +1) for both components
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      // update the picking ray with the camera and mouse position
+  raycaster.setFromCamera( mouse, camera );
+
+  // calculate objects intersecting the picking ray
+  const spheres = secondaryModel.children.filter(child => child.type === 'Mesh');
+  const intersects = raycaster.intersectObjects( spheres, true );
+
+  // if there are intersections
+  if (intersects.length > 0) {
+    // get the first intersection
+    const intersection = intersects[0];
+    // get the selected sphere
+    selectedSphere = intersection.object;
+    // set the sphere's position to a jittered position
+    selectedSphere.position.x += THREE.MathUtils.randFloat(-0.01, 0.01);
+    selectedSphere.position.y += THREE.MathUtils.randFloat(-0.01, 0.01);
+    selectedSphere.position.z += THREE.MathUtils.randFloat(-0.01, 0.01);
+  } else {
+    // reset the selected sphere
+    selectedSphere = null;
+  }
 }
 
 var clickedSphere = false
@@ -176,38 +267,18 @@ window.addEventListener("resize", onWindowResize, false);
 
 // Set box position to be mouse position
 document.addEventListener('mousemove', (event) => {
-    box.style.left = `${event.clientX}px`;
-    box.style.top = `${event.clientY}px`;
-  });
+    textBox.style.left = `${event.clientX}px`;
+    textBox.style.top = `${event.clientY}px`;
+});
 
 // Make box appear if intersectedObject
 function toggleBoxVisibility() {
-    if (intersectedObject) {
-      box.style.display = 'block'
+    if (intersectedObject && isViewingGolgi) {
+      textBox.style.display = 'block'
     } else {
-      box.style.display = 'none'
+      textBox.style.display = 'none'
     }
-  }
-
-// Loop through each contributor object and check the value of the gender property
-for (let i = 0; i < data.contributors.length; i++) {
-    const contributor = data.contributors[i];
-    const gender = contributor.gender;
-
-    // Convert the JSON object to a string using JSON.stringify
-    const jsonString = JSON.stringify(data.contributors[i].name, null, 2);
-
-    // Set the contents of the div to the JSON string
-    box.innerHTML = `<pre>${jsonString}</pre>`;
-
-    // console.log(`Contributor ${i + 1} gender: ${gender}`);
 }
-
-// Convert the JSON object to a string using JSON.stringify
-const jsonString = JSON.stringify(data.contributors[0].gender, null, 2);
-
-// Set the contents of the div to the JSON string
-box.innerHTML = `<pre>${jsonString}</pre>`;
 
 const clock = new THREE.Clock()
 // let cameraAnimationStartTime = null;
@@ -219,18 +290,21 @@ const clock = new THREE.Clock()
 
 
 var selectedChild = undefined;
+var isViewingGolgi = false;
+
 const tick = () =>
 {
 
     const elapsedTime = clock.getElapsedTime()
 
+    // Call the function to make box visible and invisible depending on mouse pos
     toggleBoxVisibility();
     
     // Update Orbital Controls
     controls.update()
     if (controls.target.distanceTo(skinModel.position) === 0) {
         // Rotate Skin Model
-        skinModel.rotation.y = .05 * elapsedTime
+        // skinModel.rotation.y = .05 * elapsedTime
     
         // Switch visibility and target depending on distance from camera
         const distance = camera.position.distanceTo(skinModel.position)
@@ -238,6 +312,7 @@ const tick = () =>
             skinModel.visible = false;
             secondaryModel.visible = true;
             controls.target.copy(secondaryModel.position);
+            isViewingGolgi = true;
         }
         
     } else if (controls.target.distanceTo(secondaryModel.position) === 0) {
@@ -246,6 +321,7 @@ const tick = () =>
             skinModel.visible = true;
             secondaryModel.visible = false;
             controls.target.copy(skinModel.position);
+            isViewingGolgi = false;
         }
     }
 
@@ -273,6 +349,9 @@ const tick = () =>
             // Update intersectedObject to the new intersected object
             intersectedObject = intersects[0].object;
             intersectedObject.material.color.set(0x00FFFF); // Color changed to highlight it
+
+            // Convert the JSON object to string and set contents of the div to the JSON string
+            textBox.innerHTML = `Race: ${intersectedObject.data.race} <br> Gender: ${intersectedObject.data.gender} <br> Age: ${intersectedObject.data.age} <br> Location: ${intersectedObject.data.location}`;
 
             // Loop through all children of secondaryModel object
             secondaryModel.children.forEach((child) => {
