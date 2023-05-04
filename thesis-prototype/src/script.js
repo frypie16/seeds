@@ -14,12 +14,12 @@ let textBox = document.getElementById('box')
 
 // Scene
 const scene = new THREE.Scene()
+scene.background = new THREE.Color(0x7ba5b8);
 
 // Objects
 
 // First Scene
 const skinModel = new THREE.Group();
-// skinModel.position.set(47, 0, 0);
 scene.add(skinModel);
 
 //Skin Model
@@ -69,6 +69,17 @@ gltfLoader2.load('/greenhouse/scene.gltf', (gltfScene) => {
     box.center( mesh.position ); // this re-sets the mesh position
     mesh.position.multiplyScalar( - 1 );
 
+    mesh.rotateY(-Math.PI / 2);
+    // mesh.position.x = 44;
+
+    // Depth test to load model parts correctly
+    mesh.traverse((node) => {
+        if (node.material) {
+            node.material.depthTest = true;
+            node.material.depthWrite = true;
+        }
+    });
+
     skinModel.add(mesh);
 });
 
@@ -104,10 +115,16 @@ gltfLoader3.load('/golgiapparatus/scene.gltf', (gltfScene) => {
             sphereMesh.position.y = THREE.MathUtils.randFloat(box.min.y, box.max.y);
             sphereMesh.position.z = THREE.MathUtils.randFloat(box.min.z, box.max.z);
             sphereMesh.name = `sphere-${contributor.contributorId}`;
-            sphereMesh.data = data.contributors[contributor.contributorId]
+            sphereMesh.data = data.contributors[contributor.contributorId - 1]
+            sphereMesh.fixedX = sphereMesh.position.x.valueOf()
+            sphereMesh.fixedY = sphereMesh.position.y.valueOf()
+            sphereMesh.fixedZ = sphereMesh.position.z.valueOf()
+
 
             // Store spheres within secondaryModel group
             secondaryModel.add(sphereMesh);
+
+            // mesh.position.multiplyScalar( - 1 );
         }
     });
 });
@@ -125,6 +142,18 @@ const pointLightMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff } ); /
 const pointLightMesh = new THREE.Mesh( pointLightGeometry, pointLightMaterial );
 pointLightMesh.position.copy( pointLight.position );
 scene.add( pointLightMesh );
+
+const pointLight2 = new THREE.PointLight(0xffffff, 0.1)
+pointLight2.position.x = 0;
+pointLight2.position.y = 2;
+pointLight2.position.z = -2;
+scene.add(pointLight2)
+
+const pointLight2Geometry = new THREE.SphereGeometry( 0.2 );
+const pointLight2Material = new THREE.MeshBasicMaterial( { color: 0x8b0000 } ); //red
+const pointLight2Mesh = new THREE.Mesh( pointLight2Geometry, pointLight2Material );
+pointLight2Mesh.position.copy( pointLight2.position );
+scene.add( pointLight2Mesh );
 
 // create an ambient light
 const ambientLight = new THREE.AmbientLight( 0xffffff, 0.3 );
@@ -184,15 +213,17 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 50;
+camera.position.x = 7;
 camera.position.y = 0
 camera.position.z = 0
 scene.add(camera)
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
-
-controls.maxDistance = 50;
+controls.enableDamping = true;
+controls.enableZoom = true;
+controls.maxDistance = 10;
+controls.zoomSpeed = 0.5;
 
 /**
  * Renderer
@@ -222,6 +253,8 @@ function onMouseMove(event) {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
+    
+
       // update the picking ray with the camera and mouse position
   raycaster.setFromCamera( mouse, camera );
 
@@ -236,15 +269,17 @@ function onMouseMove(event) {
     // get the selected sphere
     selectedSphere = intersection.object;
     // set the sphere's position to a jittered position
-    selectedSphere.position.x += THREE.MathUtils.randFloat(-0.01, 0.01);
-    selectedSphere.position.y += THREE.MathUtils.randFloat(-0.01, 0.01);
-    selectedSphere.position.z += THREE.MathUtils.randFloat(-0.01, 0.01);
+    selectedSphere.position.x = getRandomArbitrary(selectedSphere.fixedX - 0.01, selectedSphere.fixedX + 0.01)
+    selectedSphere.position.y = getRandomArbitrary(selectedSphere.fixedY - 0.01, selectedSphere.fixedY + 0.01)
+    selectedSphere.position.z = getRandomArbitrary(selectedSphere.fixedZ - 0.01, selectedSphere.fixedZ + 0.01)
+    console.log(selectedSphere.position)
   } else {
     // reset the selected sphere
     selectedSphere = null;
   }
 }
 
+/*
 var clickedSphere = false
 function onMouseClick(event) {
     if (intersectedObject) {
@@ -252,7 +287,7 @@ function onMouseClick(event) {
         clickedSphere = true;
         renderer.render(scene, camera)
     }
-}
+}*/
 
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -261,7 +296,7 @@ function onWindowResize() {
 }
 
 window.addEventListener('mousemove', onMouseMove, false);
-window.addEventListener('click', onMouseClick, false);
+//window.addEventListener('click', onMouseClick, false);
 
 window.addEventListener("resize", onWindowResize, false);
 
@@ -279,6 +314,10 @@ function toggleBoxVisibility() {
       textBox.style.display = 'none'
     }
 }
+
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  }
 
 const clock = new THREE.Clock()
 // let cameraAnimationStartTime = null;
@@ -308,7 +347,7 @@ const tick = () =>
     
         // Switch visibility and target depending on distance from camera
         const distance = camera.position.distanceTo(skinModel.position)
-        if (distance < 2) {
+        if (distance < 0.3) {
             skinModel.visible = false;
             secondaryModel.visible = true;
             controls.target.copy(secondaryModel.position);
@@ -317,7 +356,7 @@ const tick = () =>
         
     } else if (controls.target.distanceTo(secondaryModel.position) === 0) {
         const distance = camera.position.distanceTo(secondaryModel.position)
-        if (distance > 7) {
+        if (distance > 5.3) {
             skinModel.visible = true;
             secondaryModel.visible = false;
             controls.target.copy(skinModel.position);
@@ -337,7 +376,7 @@ const tick = () =>
 
         // intersectedObject variable keeps track of last object that was intersected
         // If current intersected object is different from the previous one
-        if (intersectedObject != intersects[0].object) {
+        //if (intersectedObject != intersects[0].object) {
             if (intersectedObject) {
                 // Color of previous intersected object set back to its default value
                 intersectedObject.material.color.set(0xFFC0CB);
@@ -347,35 +386,39 @@ const tick = () =>
             }
 
             // Update intersectedObject to the new intersected object
-            intersectedObject = intersects[0].object;
-            intersectedObject.material.color.set(0x00FFFF); // Color changed to highlight it
+            if (intersects[0].object.data != undefined) {
+                intersectedObject = intersects[0].object;
+                intersectedObject.material.color.set(0x00FFFF); // Color changed to highlight it
+                console.log(JSON.stringify(intersectedObject.data))
 
-            // Convert the JSON object to string and set contents of the div to the JSON string
-            textBox.innerHTML = `Race: ${intersectedObject.data.race} <br> Gender: ${intersectedObject.data.gender} <br> Age: ${intersectedObject.data.age} <br> Location: ${intersectedObject.data.location}`;
+                // Convert the JSON object to string and set contents of the div to the JSON string
+                textBox.innerHTML = `Race: ${intersectedObject.data.race} <br> Gender: ${intersectedObject.data.gender} <br> Age: ${intersectedObject.data.age} <br> Location: ${intersectedObject.data.location}`;
 
-            // Loop through all children of secondaryModel object
-            secondaryModel.children.forEach((child) => {
-                if (child.position.distanceTo(intersectedObject.position) === 0 && !child.name.includes('sphere')) {
-                    if (clickedSphere) {
-                        child.visible = true
+                // Loop through all children of secondaryModel object
+                
+                secondaryModel.children.forEach((child) => {
+                    if (child.position.distanceTo(intersectedObject.position) === 0 && !child.name.includes('sphere')) {
+                            child.visible = true
+                    
                     }
-                }
-            })
-        }
+                })
+            }
+        //}
         
     } else { // If no objects are found to intersect with the raycaster
       
         if (intersectedObject) {
             intersectedObject.material.color.set(0xFFC0CB);
+            /*
             secondaryModel.children.forEach((child) => {
                 if (child.position.distanceTo(intersectedObject.position) === 0 && !child.name.includes('sphere')) {
                     if (clickedSphere) {
                         child.visible = false
                     }
                 }
-            })
+            })*/
         }
-        clickedSphere = false
+        //clickedSphere = false
         selectedChild = undefined
         intersectedObject = null;
     }
