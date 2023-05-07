@@ -89,14 +89,22 @@ secondaryModel.visible = false;
 secondaryModel.position.set(-5, 0, 0)
 scene.add(secondaryModel);
 
-//Melanocyte? Model
+//Skin Model
 const gltfLoader3 = new GLTFLoader();
-gltfLoader3.load('/golgiapparatus/scene.gltf', (gltfScene) => {
+gltfLoader3.load('/skin/skinTest.gltf', (gltfScene) => {
     var mesh = gltfScene.scene;
     var box = new THREE.Box3();
     box.setFromObject( mesh );
     box.center( mesh.position ); // this re-sets the mesh position
     mesh.position.multiplyScalar( - 1 );
+
+    // Depth test to load model parts correctly
+    mesh.traverse((node) => {
+        if (node.material) {
+            node.material.depthTest = true;
+            node.material.depthWrite = true;
+        }
+    });
 
     secondaryModel.add(mesh);
 
@@ -107,7 +115,30 @@ gltfLoader3.load('/golgiapparatus/scene.gltf', (gltfScene) => {
         
         // If sphere doesn't exist
         if (!sphereExists) {
+            // Load skin cell
+            gltfLoader.load('/skincell/scene.gltf', (gltfScene) => {
+                var meshCell = gltfScene.scene;
+
+                // Enclosing model in a box and centering
+                var boxCell = new THREE.Box3().setFromObject( meshCell );
+                boxCell.center( meshCell.position ); // this re-sets the mesh position
+                meshCell.position.multiplyScalar( - 1 );
+                meshCell.scale.set(0.02, 0.02, 0.02);
+
+                meshCell.name = `cell-${contributor.contributorId}`;
+                meshCell.data = data.contributors[contributor.contributorId - 1]
+                meshCell.position.x = THREE.MathUtils.randFloat(box.min.x, box.max.x);
+                meshCell.position.y = THREE.MathUtils.randFloat(box.min.y /8, box.max.y /8);
+                meshCell.position.z = THREE.MathUtils.randFloat(box.min.z, box.max.z);
+                meshCell.fixedX = meshCell.position.x.valueOf()
+                meshCell.fixedY = meshCell.position.y.valueOf()
+                meshCell.fixedZ = meshCell.position.z.valueOf()
+
+                secondaryModel.add(meshCell);
+            })
+
             // Create sphere
+            /*
             const sphereGeometry = new THREE.SphereGeometry(0.05, 32, 16);
             const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xFFC0CB });
             var sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
@@ -118,11 +149,11 @@ gltfLoader3.load('/golgiapparatus/scene.gltf', (gltfScene) => {
             sphereMesh.data = data.contributors[contributor.contributorId - 1]
             sphereMesh.fixedX = sphereMesh.position.x.valueOf()
             sphereMesh.fixedY = sphereMesh.position.y.valueOf()
-            sphereMesh.fixedZ = sphereMesh.position.z.valueOf()
+            sphereMesh.fixedZ = sphereMesh.position.z.valueOf()*/
 
 
             // Store spheres within secondaryModel group
-            secondaryModel.add(sphereMesh);
+            // secondaryModel.add(sphereMesh);
 
             // mesh.position.multiplyScalar( - 1 );
         }
@@ -137,11 +168,11 @@ pointLight.position.y = 3;
 pointLight.position.z = 4;
 scene.add(pointLight)
 
-const pointLightGeometry = new THREE.SphereGeometry( 0.2 );
-const pointLightMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff } ); //white
-const pointLightMesh = new THREE.Mesh( pointLightGeometry, pointLightMaterial );
-pointLightMesh.position.copy( pointLight.position );
-scene.add( pointLightMesh );
+// const pointLightGeometry = new THREE.SphereGeometry( 0.2 );
+// const pointLightMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff } ); //white
+// const pointLightMesh = new THREE.Mesh( pointLightGeometry, pointLightMaterial );
+// pointLightMesh.position.copy( pointLight.position );
+// scene.add( pointLightMesh );
 
 const pointLight2 = new THREE.PointLight(0xffffff, 0.1)
 pointLight2.position.x = 0;
@@ -149,41 +180,41 @@ pointLight2.position.y = 2;
 pointLight2.position.z = -2;
 scene.add(pointLight2)
 
-const pointLight2Geometry = new THREE.SphereGeometry( 0.2 );
-const pointLight2Material = new THREE.MeshBasicMaterial( { color: 0x8b0000 } ); //red
-const pointLight2Mesh = new THREE.Mesh( pointLight2Geometry, pointLight2Material );
-pointLight2Mesh.position.copy( pointLight2.position );
-scene.add( pointLight2Mesh );
+// const pointLight2Geometry = new THREE.SphereGeometry( 0.2 );
+// const pointLight2Material = new THREE.MeshBasicMaterial( { color: 0x8b0000 } ); //red
+// const pointLight2Mesh = new THREE.Mesh( pointLight2Geometry, pointLight2Material );
+// pointLight2Mesh.position.copy( pointLight2.position );
+// scene.add( pointLight2Mesh );
 
 // create an ambient light
 const ambientLight = new THREE.AmbientLight( 0xffffff, 0.3 );
 scene.add( ambientLight );
 
-const ambientLightGeometry = new THREE.SphereGeometry( 0.3 );
-const ambientLightMaterial = new THREE.MeshBasicMaterial( { color: 0xFF8440 } ); //orange
-const ambientLightMesh = new THREE.Mesh( ambientLightGeometry, ambientLightMaterial );
-scene.add( ambientLightMesh ); // don't position ambient light mesh
+// const ambientLightGeometry = new THREE.SphereGeometry( 0.3 );
+// const ambientLightMaterial = new THREE.MeshBasicMaterial( { color: 0xFF8440 } ); //orange
+// const ambientLightMesh = new THREE.Mesh( ambientLightGeometry, ambientLightMaterial );
+// scene.add( ambientLightMesh ); // don't position ambient light mesh
 
 // create a directional light
 const directionalLight = new THREE.DirectionalLight( 0xffffff, 2.5 );
 directionalLight.position.set( -4, 10, -2 );
 scene.add( directionalLight );
 
-const directionalLightGeometry = new THREE.SphereGeometry( 0.2 );
-const directionalLightMaterial = new THREE.MeshBasicMaterial( { color: 0x02D46E } ); //green
-const directionalLightMesh = new THREE.Mesh( directionalLightGeometry, directionalLightMaterial );
-directionalLightMesh.position.copy( directionalLight.position );
-scene.add( directionalLightMesh );
+// const directionalLightGeometry = new THREE.SphereGeometry( 0.2 );
+// const directionalLightMaterial = new THREE.MeshBasicMaterial( { color: 0x02D46E } ); //green
+// const directionalLightMesh = new THREE.Mesh( directionalLightGeometry, directionalLightMaterial );
+// directionalLightMesh.position.copy( directionalLight.position );
+// scene.add( directionalLightMesh );
 
 // sky color ground color intensity 
 const hemiLight = new THREE.HemisphereLight( 0x0000ff, 0x00ff00, 0.6 ); 
 scene.add( hemiLight );
 
-const hemiLightGeometry = new THREE.SphereGeometry( 0.2 );
-const hemiLightMaterial = new THREE.MeshBasicMaterial( { color: 0xFDE600 } ); //yellow
-const hemiLightMesh = new THREE.Mesh( hemiLightGeometry, hemiLightMaterial );
-hemiLightMesh.position.copy( hemiLight.position );
-scene.add( hemiLightMesh );
+// const hemiLightGeometry = new THREE.SphereGeometry( 0.2 );
+// const hemiLightMaterial = new THREE.MeshBasicMaterial( { color: 0xFDE600 } ); //yellow
+// const hemiLightMesh = new THREE.Mesh( hemiLightGeometry, hemiLightMaterial );
+// hemiLightMesh.position.copy( hemiLight.position );
+// scene.add( hemiLightMesh );
 
 /**
  * Sizes
@@ -392,7 +423,7 @@ const tick = () =>
                 console.log(JSON.stringify(intersectedObject.data))
 
                 // Convert the JSON object to string and set contents of the div to the JSON string
-                textBox.innerHTML = `Race: ${intersectedObject.data.race} <br> Gender: ${intersectedObject.data.gender} <br> Age: ${intersectedObject.data.age} <br> Location: ${intersectedObject.data.location}`;
+                textBox.innerHTML = `Race: ${intersectedObject.data.race} <br> Gender: ${intersectedObject.data.gender} <br> Age: ${intersectedObject.data.age} <br> Location: ${intersectedObject.data.location} <br> Story: ${intersectedObject.data.story}`;
 
                 // Loop through all children of secondaryModel object
                 
