@@ -116,7 +116,7 @@ gltfLoader3.load('/skin/skinTest.gltf', (gltfScene) => {
         // If sphere doesn't exist
         if (!sphereExists) {
             // Load skin cell
-            gltfLoader.load('/skincell/scene.gltf', (gltfScene) => {
+            gltfLoader.load('/cell/compscene.gltf', (gltfScene) => {
                 var meshCell = gltfScene.scene;
 
                 // Enclosing model in a box and centering
@@ -128,7 +128,7 @@ gltfLoader3.load('/skin/skinTest.gltf', (gltfScene) => {
                 meshCell.name = `cell-${contributor.contributorId}`;
                 meshCell.data = data.contributors[contributor.contributorId - 1]
                 meshCell.position.x = THREE.MathUtils.randFloat(box.min.x, box.max.x);
-                meshCell.position.y = THREE.MathUtils.randFloat(box.min.y /8, box.max.y /8);
+                meshCell.position.y = THREE.MathUtils.randFloat(box.min.y /20 -1.45, box.max.y /20 -1.45);
                 meshCell.position.z = THREE.MathUtils.randFloat(box.min.z, box.max.z);
                 meshCell.fixedX = meshCell.position.x.valueOf()
                 meshCell.fixedY = meshCell.position.y.valueOf()
