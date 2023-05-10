@@ -3,10 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ThreeJS Starter</title>
+    <title>Seeds</title>
 </head>
 <body>
+    <header>
+        <div class="hamburger-menu" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+        <button id="conceptButton">CONCEPT</button>
+    </header>
+    
     <canvas class="webgl"></canvas>
+
+    <div id="home-button">⌂</div>
+
+    <div id="overlayMenu">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </div>
+
+    <div id="overlay">
+        <div id="overlayContent">
+            <button id="closeButton">x</button>
+            <p>Step into the enchanting greenhouse of "Seeds." 
+                Uncover the hidden stories of misdiagnoses in healthcare 
+                as you guide patients to nurture their silenced experiences. 
+                With each tale explored, watch as plants sprout from the seeds, 
+                adorning the once-bare mannequin. Together, we cultivate empathy, 
+                accountability, and a more just future. Join "Seeds" and breathe 
+                life into the voices that deserve to be heard.</p>
+            <button id="goButton">GO →</button>
+        </div>
+    </div>
+
     <div id="box" style="display:none;"></div>
 </body>
 </html>

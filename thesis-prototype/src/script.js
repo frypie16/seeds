@@ -6,11 +6,53 @@ import * as dat from 'dat.gui'
 import * as data from '../diagnosis_stories.json'
 
 // Debug
-const gui = new dat.GUI() 
+// const gui = new dat.GUI() 
 
 // Canvas
-const canvas = document.querySelector('canvas.webgl')
+var canvas = document.querySelector('canvas.webgl')
 let textBox = document.getElementById('box')
+
+// UI Elements
+
+var homeButton = document.getElementById("home-button");
+// var overlayMenu = document.getElementById('overlayMenu');
+var conceptButton = document.getElementById('conceptButton');
+var closeButton = document.getElementById('closeButton');
+var goButton = document.getElementById('goButton');
+var overlay = document.getElementById('overlay');
+
+window.onload = function() {
+    homeButton.addEventListener("click", function() {
+      // Reload the page to restart the website
+      location.reload();
+    });
+  };
+
+function toggleMenu() {
+    var overlayMenu = document.getElementById('overlayMenu');
+    if (overlayMenu.style.display === '' || overlayMenu.style.display === 'none') {
+      overlayMenu.style.display = 'block';
+    } else {
+      overlayMenu.style.display = 'none';
+    }
+  }
+
+// Function to toggle the overlay box
+function toggleOverlay() {
+    if (overlay.style.display === 'block') {
+        overlay.style.display = 'none'; // Hide the overlay box
+        canvas.classList.remove('blurred'); // Remove blur effect from canvas
+    } else {
+        overlay.style.display = 'block'; // Show the overlay box
+        canvas.classList.add('blurred'); // Apply blur effect to canvas
+    }
+}
+
+// click event listener to the button
+conceptButton.addEventListener('click', toggleOverlay);
+closeButton.addEventListener('click', toggleOverlay);
+goButton.addEventListener('click', toggleOverlay);
+// overlayMenu.addEventListener('click', toggleMenu);
 
 // Scene
 const scene = new THREE.Scene()
@@ -31,6 +73,8 @@ gltfLoader.load('/mannequin/wateringMannequin.gltf', (gltfScene) => {
     var box = new THREE.Box3().setFromObject( mesh );
     box.center( mesh.position ); // this re-sets the mesh position
     mesh.position.multiplyScalar( - 1 );
+
+    mesh.position.y = -1.1;
 
     const mixer = new THREE.AnimationMixer(gltfScene.scene);
 
@@ -91,6 +135,7 @@ scene.add(secondaryModel);
 
 //Skin Model
 const gltfLoader3 = new GLTFLoader();
+const lod = new THREE.LOD();
 gltfLoader3.load('/skin/skinTest.gltf', (gltfScene) => {
     var mesh = gltfScene.scene;
     var box = new THREE.Box3();
@@ -116,6 +161,53 @@ gltfLoader3.load('/skin/skinTest.gltf', (gltfScene) => {
         // If sphere doesn't exist
         if (!sphereExists) {
             // Load skin cell
+            // gltfLoader.load('/skincell/scene.gltf', (gltfScene) => {
+
+            //     // Get the mesh from the GLTF scene
+            //     const meshCell = gltfScene.scene;
+              
+            //     // Enclosing model in a box and centering
+            //     const boxCell = new THREE.Box3().setFromObject( meshCell );
+            //     boxCell.center( meshCell.position ); // this re-sets the mesh position
+            //     meshCell.position.multiplyScalar( - 1 );
+            //     meshCell.scale.set(0.02, 0.02, 0.02);
+              
+            //     // Set the name and data properties
+            //     meshCell.name = `cell-${contributor.contributorId}`;
+            //     meshCell.data = data.contributors[contributor.contributorId - 1]
+              
+            //     // Create the low-quality model
+            //     const lowQualityLoader = new THREE.GLTFLoader();
+            //     lowQualityLoader.load('/cell/compscene.gltf', (lowQualityGltfScene) => {
+              
+            //       // Get the mesh from the low-quality GLTF scene
+            //       const lowQualityMeshCell = lowQualityGltfScene.scene.children[0];
+              
+            //       // Set the position, scale, and name properties
+            //       lowQualityMeshCell.position.copy(meshCell.position);
+            //       lowQualityMeshCell.scale.copy(meshCell.scale);
+            //       lowQualityMeshCell.name = meshCell.name;
+              
+            //       // Add the high-quality model to the LOD object
+            //       lod.addLevel(meshCell, 0);
+              
+            //       // Add the low-quality model to the LOD object
+            //       lod.addLevel(lowQualityMeshCell, 500); // Show low-quality model when the camera is 500 units away
+              
+            //       // Set the random position
+            //       meshCell.position.x = THREE.MathUtils.randFloat(box.min.x, box.max.x);
+            //       meshCell.position.y = THREE.MathUtils.randFloat(box.min.y /20 -1.45, box.max.y /20 -1.45);
+            //       meshCell.position.z = THREE.MathUtils.randFloat(box.min.z, box.max.z);
+              
+            //       // Set the fixed position properties
+            //       meshCell.fixedX = meshCell.position.x.valueOf()
+            //       meshCell.fixedY = meshCell.position.y.valueOf()
+            //       meshCell.fixedZ = meshCell.position.z.valueOf()
+              
+            //       // Add the LOD object to the secondaryModel
+            //       secondaryModel.add(lod);
+            //     });
+            //   });
             gltfLoader.load('/cell/compscene.gltf', (gltfScene) => {
                 var meshCell = gltfScene.scene;
 
@@ -159,6 +251,20 @@ gltfLoader3.load('/skin/skinTest.gltf', (gltfScene) => {
         }
     });
 });
+
+const gltfLoader4 = new GLTFLoader();
+gltfLoader4.load('/plant/scene.gltf', (gltfScene) => {
+    var mesh = gltfScene.scene;
+    var box = new THREE.Box3().setFromObject( mesh );
+    box.center( mesh.position ); // this re-sets the mesh position
+    mesh.position.multiplyScalar( - 1 );
+
+    // mesh.rotateY(-Math.PI / 2);
+    // mesh.position.x = 44;
+
+    // secondaryModel.add(mesh);
+});
+
 
 // Lights
 
@@ -248,6 +354,20 @@ camera.position.x = 7;
 camera.position.y = 0
 camera.position.z = 0
 scene.add(camera)
+
+// Audio
+const listener = new THREE.AudioListener();
+camera.add(listener);
+
+const sound = new THREE.Audio(listener);
+const audioLoader = new THREE.AudioLoader();
+audioLoader.load('/audio/birds.mp3', function(buffer) {
+    sound.setBuffer(buffer);
+    sound.setLoop(true); //set the sound to loop
+    sound.setVolume(1); //set the volume (0 to 1)
+    sound.play();
+});
+
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
@@ -408,18 +528,18 @@ const tick = () =>
         // intersectedObject variable keeps track of last object that was intersected
         // If current intersected object is different from the previous one
         //if (intersectedObject != intersects[0].object) {
-            if (intersectedObject) {
-                // Color of previous intersected object set back to its default value
-                intersectedObject.material.color.set(0xFFC0CB);
+            // if (intersectedObject) {
+            //     // Color of previous intersected object set back to its default value
+            //     intersectedObject.material.color.set(0xFFC0CB);
 
-                //camera.lookAt(intersectedObject.position);
+            //     //camera.lookAt(intersectedObject.position);
                 
-            }
+            // }
 
             // Update intersectedObject to the new intersected object
             if (intersects[0].object.data != undefined) {
                 intersectedObject = intersects[0].object;
-                intersectedObject.material.color.set(0x00FFFF); // Color changed to highlight it
+                // intersectedObject.material.color.set(0x00FFFF); // Color changed to highlight it
                 console.log(JSON.stringify(intersectedObject.data))
 
                 // Convert the JSON object to string and set contents of the div to the JSON string
@@ -428,7 +548,7 @@ const tick = () =>
                 // Loop through all children of secondaryModel object
                 
                 secondaryModel.children.forEach((child) => {
-                    if (child.position.distanceTo(intersectedObject.position) === 0 && !child.name.includes('sphere')) {
+                    if (child.position.distanceTo(intersectedObject.position) === 0 && !child.name.includes('cell')) {
                             child.visible = true
                     
                     }
