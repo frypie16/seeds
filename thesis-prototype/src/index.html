@@ -7,11 +7,11 @@
 </head>
 <body>
     <header>
-        <div class="hamburger-menu" onclick="toggleMenu()">
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-        </div>
+        <button id="menu-button">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         <button id="conceptButton">CONCEPT</button>
     </header>
     
@@ -19,13 +19,14 @@
 
     <div id="home-button">⌂</div>
 
-    <div id="overlayMenu">
+    <div id="menu">
         <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">The Data</a></li>
+          <li><a href="#">Contribute</a></li>
+          <li><a href="#">Contact</a></li>
         </ul>
-    </div>
+      </div>
 
     <div id="overlay">
         <div id="overlayContent">
@@ -38,6 +39,29 @@
                 accountability, and a more just future. Join "Seeds" and breathe 
                 life into the voices that deserve to be heard.</p>
             <button id="goButton">GO →</button>
+        </div>
+    </div>
+
+    <div id="data-container">
+        <div id="data-tabs">
+          <div class="tab active-tab" onclick="toggleData('gender')">Gender</div>
+          <div class="tab" onclick="toggleData('race')">Race</div>
+        </div>
+
+        <div id="gender-box" class="active">
+          <div id="gender-bar-container">
+                <div id="gender-bar-female"></div>
+                <div id="gender-bar-male"></div>
+                <div id="gender-bar-trans-male"></div>
+                <div id="gender-bar-trans-female"></div>
+                <div id="gender-bar-variant"></div>
+                <div id="gender-bar-prefer-not"></div>
+                <div id="gender-bar-other"></div>
+            </div>
+        </div>
+
+        <div id="race-box">
+            <!-- Add your race data here -->
         </div>
     </div>
 

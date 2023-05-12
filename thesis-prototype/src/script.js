@@ -15,7 +15,8 @@ let textBox = document.getElementById('box')
 // UI Elements
 
 var homeButton = document.getElementById("home-button");
-// var overlayMenu = document.getElementById('overlayMenu');
+var menuButton = document.getElementById("menu-button");
+var menu = document.getElementById("menu");
 var conceptButton = document.getElementById('conceptButton');
 var closeButton = document.getElementById('closeButton');
 var goButton = document.getElementById('goButton');
@@ -27,15 +28,6 @@ window.onload = function() {
       location.reload();
     });
   };
-
-function toggleMenu() {
-    var overlayMenu = document.getElementById('overlayMenu');
-    if (overlayMenu.style.display === '' || overlayMenu.style.display === 'none') {
-      overlayMenu.style.display = 'block';
-    } else {
-      overlayMenu.style.display = 'none';
-    }
-  }
 
 // Function to toggle the overlay box
 function toggleOverlay() {
@@ -49,10 +41,92 @@ function toggleOverlay() {
 }
 
 // click event listener to the button
+menuButton.addEventListener("click", function() {
+    if (menu.style.transform === "translateX(200px)") {
+      menu.style.transform = "translateX(0)";
+    } else {
+      menu.style.transform = "translateX(200px)";
+    }
+  });
 conceptButton.addEventListener('click', toggleOverlay);
 closeButton.addEventListener('click', toggleOverlay);
 goButton.addEventListener('click', toggleOverlay);
 // overlayMenu.addEventListener('click', toggleMenu);
+
+var contributors = data.contributors;
+var totalContributors = contributors.length;
+var femaleCount = contributors.filter(function(contributor) {
+  return contributor.gender === "Female";
+}).length;
+
+var maleCount = contributors.filter(function(contributor) {
+  return contributor.gender === "Male";
+}).length;
+
+var transMaleCount = contributors.filter(function(contributor) {
+    return contributor.gender === "Trans-male";
+  }).length;
+
+var transFemaleCount = contributors.filter(function(contributor) {
+    return contributor.gender === "Trans-female";
+}).length;
+
+var variantCount = contributors.filter(function(contributor) {
+    return contributor.gender === "Gender-variant / non-conforming";
+}).length;
+
+var preferNotCount = contributors.filter(function(contributor) {
+    return contributor.gender === "Prefer not to say";
+}).length;
+
+var otherCount = contributors.filter(function(contributor) {
+    return contributor.gender !== "Female" && contributor.gender !== "Male" && contributor.gender !== "Trans-male" && contributor.gender !== "Trans-female" && contributor.gender !== "Gender-variant / non-conforming" && contributor.gender !== "Prefer not to say";
+  }).length;
+
+var femalePercentage = (femaleCount / totalContributors) * 100;
+var malePercentage = (maleCount / totalContributors) * 100;
+var transMalePercentage = (transMaleCount / totalContributors) * 100;
+var transFemalePercentage = (transFemaleCount / totalContributors) * 100;
+var variantPercentage = (variantCount / totalContributors) * 100;
+var preferNotPercentage = (preferNotCount / totalContributors) * 100;
+var otherPercentage = (otherCount / totalContributors) * 100;
+
+var genderBarFemale = document.getElementById("gender-bar-female");
+genderBarFemale.style.width = femalePercentage + "%";
+
+var genderBarMale = document.getElementById("gender-bar-male");
+genderBarMale.style.width = malePercentage + "%";
+
+var genderBarTransMale = document.getElementById("gender-bar-trans-male");
+genderBarTransMale.style.width = transMalePercentage + "%";
+
+var genderBarTransFemale = document.getElementById("gender-bar-trans-female");
+genderBarTransFemale.style.width = transFemalePercentage + "%";
+
+var genderBarVariant = document.getElementById("gender-bar-variant");
+genderBarVariant.style.width = variantPercentage + "%";
+
+var genderBarPreferNot = document.getElementById("gender-bar-prefer-not");
+genderBarPreferNot.style.width = preferNotPercentage + "%";
+
+var genderBarOther = document.getElementById("gender-bar-other");
+genderBarOther.style.width = otherPercentage + "%";
+
+function toggleData(tab) {
+    var tabs = document.getElementsByClassName("tab");
+    var dataBoxes = document.getElementsByClassName("data-box");
+  
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].classList.remove("active-tab");
+      dataBoxes[i].classList.remove("active");
+    }
+  
+    var selectedTab = document.getElementById(tab + "-tab");
+    var selectedBox = document.getElementById(tab + "-box");
+  
+    selectedTab.classList.add("active-tab");
+    selectedBox.classList.add("active");
+  }
 
 // Scene
 const scene = new THREE.Scene()
@@ -212,9 +286,9 @@ gltfLoader3.load('/skin/skinTest.gltf', (gltfScene) => {
                 var meshCell = gltfScene.scene;
 
                 // Enclosing model in a box and centering
-                var boxCell = new THREE.Box3().setFromObject( meshCell );
-                boxCell.center( meshCell.position ); // this re-sets the mesh position
-                meshCell.position.multiplyScalar( - 1 );
+                // var boxCell = new THREE.Box3().setFromObject( meshCell );
+                // boxCell.center( meshCell.position ); // this re-sets the mesh position
+                // meshCell.position.multiplyScalar( - 1 );
                 meshCell.scale.set(0.02, 0.02, 0.02);
 
                 meshCell.name = `cell-${contributor.contributorId}`;
@@ -230,18 +304,18 @@ gltfLoader3.load('/skin/skinTest.gltf', (gltfScene) => {
             })
 
             // Create sphere
-            /*
-            const sphereGeometry = new THREE.SphereGeometry(0.05, 32, 16);
-            const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xFFC0CB });
-            var sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
-            sphereMesh.position.x = THREE.MathUtils.randFloat(box.min.x, box.max.x);
-            sphereMesh.position.y = THREE.MathUtils.randFloat(box.min.y, box.max.y);
-            sphereMesh.position.z = THREE.MathUtils.randFloat(box.min.z, box.max.z);
-            sphereMesh.name = `sphere-${contributor.contributorId}`;
-            sphereMesh.data = data.contributors[contributor.contributorId - 1]
-            sphereMesh.fixedX = sphereMesh.position.x.valueOf()
-            sphereMesh.fixedY = sphereMesh.position.y.valueOf()
-            sphereMesh.fixedZ = sphereMesh.position.z.valueOf()*/
+            
+            // const sphereGeometry = new THREE.SphereGeometry(0.05, 32, 16);
+            // const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xFFC0CB });
+            // var sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
+            // sphereMesh.position.x = THREE.MathUtils.randFloat(box.min.x, box.max.x);
+            // sphereMesh.position.y = THREE.MathUtils.randFloat(box.min.y, box.max.y);
+            // sphereMesh.position.z = THREE.MathUtils.randFloat(box.min.z, box.max.z);
+            // sphereMesh.name = `sphere-${contributor.contributorId}`;
+            // sphereMesh.data = data.contributors[contributor.contributorId - 1]
+            // sphereMesh.fixedX = sphereMesh.position.x.valueOf()
+            // sphereMesh.fixedY = sphereMesh.position.y.valueOf()
+            // sphereMesh.fixedZ = sphereMesh.position.z.valueOf()
 
 
             // Store spheres within secondaryModel group
@@ -252,18 +326,18 @@ gltfLoader3.load('/skin/skinTest.gltf', (gltfScene) => {
     });
 });
 
-const gltfLoader4 = new GLTFLoader();
-gltfLoader4.load('/plant/scene.gltf', (gltfScene) => {
-    var mesh = gltfScene.scene;
-    var box = new THREE.Box3().setFromObject( mesh );
-    box.center( mesh.position ); // this re-sets the mesh position
-    mesh.position.multiplyScalar( - 1 );
+// const gltfLoader4 = new GLTFLoader();
+// gltfLoader4.load('/plant/scene.gltf', (gltfScene) => {
+//     var mesh = gltfScene.scene;
+//     var box = new THREE.Box3().setFromObject( mesh );
+//     box.center( mesh.position ); // this re-sets the mesh position
+//     mesh.position.multiplyScalar( - 1 );
 
-    // mesh.rotateY(-Math.PI / 2);
-    // mesh.position.x = 44;
+//     // mesh.rotateY(-Math.PI / 2);
+//     // mesh.position.x = 44;
 
-    // secondaryModel.add(mesh);
-});
+//     // secondaryModel.add(mesh);
+// });
 
 
 // Lights
@@ -410,8 +484,8 @@ function onMouseMove(event) {
   raycaster.setFromCamera( mouse, camera );
 
   // calculate objects intersecting the picking ray
-  const spheres = secondaryModel.children.filter(child => child.type === 'Mesh');
-  const intersects = raycaster.intersectObjects( spheres, true );
+  const cells = secondaryModel.children.filter(child => child.name.includes('cell'));
+  const intersects = raycaster.intersectObjects( cells, true );
 
   // if there are intersections
   if (intersects.length > 0) {
@@ -420,9 +494,9 @@ function onMouseMove(event) {
     // get the selected sphere
     selectedSphere = intersection.object;
     // set the sphere's position to a jittered position
-    selectedSphere.position.x = getRandomArbitrary(selectedSphere.fixedX - 0.01, selectedSphere.fixedX + 0.01)
-    selectedSphere.position.y = getRandomArbitrary(selectedSphere.fixedY - 0.01, selectedSphere.fixedY + 0.01)
-    selectedSphere.position.z = getRandomArbitrary(selectedSphere.fixedZ - 0.01, selectedSphere.fixedZ + 0.01)
+    // selectedSphere.position.x = getRandomArbitrary(selectedSphere.fixedX - 0.01, selectedSphere.fixedX + 0.01)
+    // selectedSphere.position.y = getRandomArbitrary(selectedSphere.fixedY - 0.01, selectedSphere.fixedY + 0.01)
+    // selectedSphere.position.z = getRandomArbitrary(selectedSphere.fixedZ - 0.000001, selectedSphere.fixedZ + 0.000001)
     console.log(selectedSphere.position)
   } else {
     // reset the selected sphere
