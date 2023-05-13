@@ -43,26 +43,29 @@
     </div>
 
     <div id="data-container">
-        <div id="data-tabs">
-          <div class="tab active-tab" onclick="toggleData('gender')">Gender</div>
-          <div class="tab" onclick="toggleData('race')">Race</div>
+      <div id="data-tabs">
+        <div class="tab active-tab" onclick="toggleData('gender')">Gender</div>
+        <div class="tab" onclick="toggleData('race')">Race</div>
+      </div>
+    
+      <div id="gender-box" class="active">
+        <div id="gender-bar-container">
+          <div id="gender-bar-female"></div>
+          <div id="gender-bar-male"></div>
+          <div id="gender-bar-trans-male"></div>
+          <div id="gender-bar-trans-female"></div>
+          <div id="gender-bar-variant"></div>
+          <div id="gender-bar-prefer-not"></div>
+          <div id="gender-bar-other"></div>
         </div>
-
-        <div id="gender-box" class="active">
-          <div id="gender-bar-container">
-                <div id="gender-bar-female"></div>
-                <div id="gender-bar-male"></div>
-                <div id="gender-bar-trans-male"></div>
-                <div id="gender-bar-trans-female"></div>
-                <div id="gender-bar-variant"></div>
-                <div id="gender-bar-prefer-not"></div>
-                <div id="gender-bar-other"></div>
-            </div>
+      </div>
+    
+      <div id="race-box">
+        <div id="race-bar-container">
+          <div id="race-bar-south-asian"></div>
+          <div id="race-bar-white"></div>
         </div>
-
-        <div id="race-box">
-            <!-- Add your race data here -->
-        </div>
+      </div>
     </div>
 
     <div id="box" style="display:none;"></div>

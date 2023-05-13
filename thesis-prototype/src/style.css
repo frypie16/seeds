@@ -154,49 +154,57 @@ body
 }
 
 #data-container {
-    position: relative;
-    margin-top: 10px;
-  }
-  
-  #data-tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  
-  .tab {
-    flex-grow: 1;
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .active-tab {
-    background-color: #eee;
-  }
-  
-  #gender-box,
-  #race-box {
-    width: 200px;
-    height: 100px;
-    background-color: #eee;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    display: none;
-    margin: 0 auto; /* Centers the boxes horizontally */
-  }
-  
-  #gender-box.active,
-  #race-box.active {
-    display: block;
-  }
-  
-  #gender-bar-container {
-    height: 60px;
-  }
-  
+  position: fixed;
+  top: 20px;
+  right: 80px;
+  z-index: 9999;
+}
+
+#data-tabs {
+  display: flex;
+  justify-content: center;
+}
+
+.tab {
+  flex-grow: 1;
+  padding: 5px;
+  border-radius: 5px 5px 0px 0px;
+  background-color: #b1b0a0;
+  text-align: center;
+  font-size: 12px;
+  font-family: 'Muli', sans-serif;
+  cursor: pointer;
+}
+
+.active-tab {
+  background-color: #dbc09d;
+}
+
+#gender-box,
+#race-box {
+  width: 200px;
+  height: 100px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 0px 0px 5px 5px;
+  padding: 10px;
+  display: none;
+  margin-bottom: 10px;
+}
+
+#gender-box.active,
+#race-box.active {
+  display: block;
+}
+
+#gender-bar-container {
+  height: 60px;
+}
+
+#race-bar-container {
+  height: 60px;
+}
+
 #gender-bar-female,
 #gender-bar-male,
 #gender-bar-trans-male,
@@ -204,10 +212,18 @@ body
 #gender-bar-variant,
 #gender-bar-prefer-not,
 #gender-bar-other {
-    height: 10%;
-    margin-bottom: 5px;
-    background-color: #007bff;
-    border-radius: 10px;
+  height: 17%;
+  margin-bottom: 5px;
+  background-color: #6a9671;
+  border-radius: 10px;
+}
+
+#race-bar-south-asian,
+#race-bar-white {
+  height: 17%;
+  margin-bottom: 5px;
+  background-color: #96856a;
+  border-radius: 10px;
 }
 
 .webgl

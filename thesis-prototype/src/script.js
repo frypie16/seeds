@@ -55,6 +55,8 @@ goButton.addEventListener('click', toggleOverlay);
 
 var contributors = data.contributors;
 var totalContributors = contributors.length;
+
+//Gender calculations
 var femaleCount = contributors.filter(function(contributor) {
   return contributor.gender === "Female";
 }).length;
@@ -112,20 +114,46 @@ genderBarPreferNot.style.width = preferNotPercentage + "%";
 var genderBarOther = document.getElementById("gender-bar-other");
 genderBarOther.style.width = otherPercentage + "%";
 
-function toggleData(tab) {
-    var tabs = document.getElementsByClassName("tab");
-    var dataBoxes = document.getElementsByClassName("data-box");
-  
-    for (var i = 0; i < tabs.length; i++) {
-      tabs[i].classList.remove("active-tab");
-      dataBoxes[i].classList.remove("active");
+//Race calculations
+function updateRaceBars() {
+var southAsianCount = contributors.filter(function(contributor) {
+    return contributor.race === "South Asian";
+  }).length;
+
+var whiteCount = contributors.filter(function(contributor) {
+    return contributor.race === "White";
+  }).length;
+
+var southAsianPercentage = (southAsianCount / totalContributors) * 100;
+var whitePercentage = (whiteCount / totalContributors) * 100;
+
+var raceBarSouthAsian = document.getElementById("race-bar-south-asian");
+raceBarSouthAsian.style.width = southAsianPercentage + "%";
+
+var raceBarWhite = document.getElementById("race-bar-white");
+raceBarWhite.style.width = whitePercentage + "%";
+}
+
+function toggleData(dataType) {
+    var genderBox = document.getElementById("gender-box");
+    var raceBox = document.getElementById("race-box");
+    var genderTab = document.getElementsByClassName("tab")[0];
+    var raceTab = document.getElementsByClassName("tab")[1];
+
+    if (dataType === "gender") {
+      genderBox.classList.add("active");
+      raceBox.classList.remove("active");
+      genderTab.classList.add("active-tab");
+      raceTab.classList.remove("active-tab");
+    } else if (dataType === "race") {
+      genderBox.classList.remove("active");
+      raceBox.classList.add("active");
+      genderTab.classList.remove("active-tab");
+      raceTab.classList.add("active-tab");
+
+      // Update race bars
+      updateRaceBars();
     }
-  
-    var selectedTab = document.getElementById(tab + "-tab");
-    var selectedBox = document.getElementById(tab + "-box");
-  
-    selectedTab.classList.add("active-tab");
-    selectedBox.classList.add("active");
   }
 
 // Scene
