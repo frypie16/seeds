@@ -15,6 +15,38 @@ body
 @import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
 
+#title {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* height: 100vh; */
+  color: #b1b0a0;
+  font-size: 200px;
+  font-family: 'Muli', sans-serif;
+  opacity: 0;
+  animation: fade-in 2s forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+
 #home-button {
     position: fixed;
     bottom: 20px;
@@ -197,12 +229,29 @@ body
   display: block;
 }
 
-#gender-bar-container {
+#gender-bar-container,
+#race-bar-container {
   height: 60px;
 }
 
-#race-bar-container {
-  height: 60px;
+.bar-container {
+  display: flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.column:first-child {
+  flex: 1;
+  min-width: max-content;
+}
+
+.bar-label {
+  flex: 1;
+  font-size: 8px;
+  font-family: 'Muli', sans-serif;
+  margin-bottom: 5px;
 }
 
 #gender-bar-female,

@@ -14,6 +14,150 @@ let textBox = document.getElementById('box')
 
 // UI Elements
 
+document.addEventListener("DOMContentLoaded", function() {
+    const title = document.getElementById("title");
+    const text = "SEEDS";
+    let index = 0;
+  
+    function displayText() {
+      if (index < text.length) {
+        title.innerHTML += text.charAt(index);
+        index++;
+        setTimeout(displayText, 200); // Adjust the delay between letters here
+      } else {
+        setTimeout(() => {
+          title.classList.add("fade-out");
+          loadElements(); // Load the additional HTML elements
+        }, 1000); // Adjust the delay before fading out here
+      }
+    }
+  
+    // Delay before animation starts
+    setTimeout(displayText, 1000); // Adjust the delay before the first letter appears here
+  
+    function loadElements() {
+      const header = document.createElement("header");
+      header.innerHTML = `
+        <button id="menu-button">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <button id="conceptButton">CONCEPT</button>
+      `;
+      document.body.appendChild(header);
+  
+      const canvas = document.createElement("canvas");
+      canvas.classList.add("webgl");
+      document.body.appendChild(canvas);
+  
+      const homeButton = document.createElement("div");
+      homeButton.id = "home-button";
+      homeButton.innerText = "⌂";
+      document.body.appendChild(homeButton);
+  
+      const menu = document.createElement("div");
+      menu.id = "menu";
+      menu.innerHTML = `
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">The Data</a></li>
+          <li><a href="#">Contribute</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      `;
+      document.body.appendChild(menu);
+  
+      const overlay = document.createElement("div");
+      overlay.id = "overlay";
+      overlay.innerHTML = `
+        <div id="overlayContent">
+          <button id="closeButton">x</button>
+          <p>Step into the enchanting greenhouse of "Seeds." 
+            Uncover the hidden stories of misdiagnoses in healthcare 
+            as you guide patients to nurture their silenced experiences. 
+            With each tale explored, watch as plants sprout from the seeds, 
+            adorning the once-bare mannequin. Together, we cultivate empathy, 
+            accountability, and a more just future. Join "Seeds" and breathe 
+            life into the voices that deserve to be heard.</p>
+          <button id="goButton">GO →</button>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+  
+      const dataContainer = document.createElement("div");
+      dataContainer.id = "data-container";
+      dataContainer.innerHTML = `
+        <div id="data-tabs">
+          <div class="tab active-tab" onclick="toggleData('gender')">Gender</div>
+          <div class="tab" onclick="toggleData('race')">Race</div>
+        </div>
+  
+        <div id="gender-box" class="active">
+          <div id="gender-bar-container" class="bar-container">
+            <div class="column">
+              <div class="bar-label">Female</div>
+              <div class="bar-label">Male</div>
+              <div class="bar-label">Trans-male</div>
+              <div class="bar-label">Trans-female</div>
+              <div class="bar-label">Gender-variant</div>
+              <div class="bar-label">Prefer not to say</div>
+              <div class="bar-label">Other</div>
+              </div>
+              <div class="column">
+                <div id="gender-bar-female"></div>
+                <div id="gender-bar-male"></div>
+                <div id="gender-bar-trans-male"></div>
+                <div id="gender-bar-trans-female"></div>
+                <div id="gender-bar-variant"></div>
+                <div id="gender-bar-prefer-not"></div>
+                <div id="gender-bar-other"></div>
+              </div>
+            </div>
+          </div>
+    
+          <div id="race-box">
+            <div id="race-bar-container" class="bar-container">
+              <div class="column">
+                <div class="bar-label">South Asian</div>
+                <div class="bar-label">White</div>
+              </div>
+              <div class="column">
+                <div id="race-bar-south-asian"></div>
+                <div id="race-bar-white"></div>
+              </div>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(dataContainer);
+    
+        const box = document.createElement("div");
+        box.id = "box";
+        box.style.display = "none";
+        document.body.appendChild(box);
+      }
+    });
+
+// document.addEventListener("DOMContentLoaded", function() {
+//     const title = document.getElementById("title");
+//     const text = "SEEDS";
+//     let index = 0;
+
+//     function displayText() {
+//       if (index < text.length) {
+//         title.innerHTML += text.charAt(index);
+//         index++;
+//         setTimeout(displayText, 150); // Adjust the delay between letters here
+//       } else {
+//         setTimeout(() => {
+//           title.classList.add("fade-out");
+//         }, 200); // Adjust the delay before fading out here
+//       }
+//     }
+
+//     setTimeout(displayText, 5000);
+// });
+
 var homeButton = document.getElementById("home-button");
 var menuButton = document.getElementById("menu-button");
 var menu = document.getElementById("menu");
