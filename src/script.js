@@ -13,7 +13,7 @@ var canvas = document.querySelector('canvas.webgl')
 let textBox = document.getElementById('box')
 
 // UI Elements
-
+/*
 document.addEventListener("DOMContentLoaded", function() {
     const title = document.getElementById("title");
     const text = "SEEDS";
@@ -137,26 +137,42 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.appendChild(box);
       }
     });
+*/
 
-// document.addEventListener("DOMContentLoaded", function() {
-//     const title = document.getElementById("title");
-//     const text = "SEEDS";
-//     let index = 0;
+document.addEventListener("DOMContentLoaded", function() {
+    const background = document.getElementById("background");
+    const title = document.getElementById("title");
+    const canvas = document.querySelector(".webgl");
+    const text = "SEEDS";
+    let index = 0;
 
-//     function displayText() {
-//       if (index < text.length) {
-//         title.innerHTML += text.charAt(index);
-//         index++;
-//         setTimeout(displayText, 150); // Adjust the delay between letters here
-//       } else {
-//         setTimeout(() => {
-//           title.classList.add("fade-out");
-//         }, 200); // Adjust the delay before fading out here
-//       }
-//     }
+    canvas.style.opacity = "0";
+    homeButton.style.opacity = "0";
+    menuButton.style.opacity = "0";
+    conceptButton.style.opacity = "0";
 
-//     setTimeout(displayText, 5000);
-// });
+    function displayText() {
+      if (index < text.length) {
+        title.innerHTML += text.charAt(index);
+        index++;
+        setTimeout(displayText, 150); // Adjust the delay between letters here
+      } else {
+        setTimeout(() => {
+            title.classList.add("fade-out");
+            background.classList.add("fade-out");
+            setTimeout(() => {
+                canvas.style.opacity = "1";
+                homeButton.style.opacity = "1";
+                menuButton.style.opacity = "1";
+                conceptButton.style.opacity = "1";
+                canvas.style.animation = "fade-in 3s forwards";
+            }, 1000);
+        }, 1000);
+      }
+    }
+
+    setTimeout(displayText, 5000);
+});
 
 var homeButton = document.getElementById("home-button");
 var menuButton = document.getElementById("menu-button");
@@ -186,10 +202,10 @@ function toggleOverlay() {
 
 // click event listener to the button
 menuButton.addEventListener("click", function() {
-    if (menu.style.transform === "translateX(200px)") {
-      menu.style.transform = "translateX(0)";
+    if (menu.style.display === "none") {
+      menu.style.display = "block"; // Show the menu
     } else {
-      menu.style.transform = "translateX(200px)";
+      menu.style.display = "none"; // Hide the menu
     }
   });
 conceptButton.addEventListener('click', toggleOverlay);
@@ -401,11 +417,11 @@ gltfLoader3.load('/skin/skinTest.gltf', (gltfScene) => {
 
     // Loop through JSON data
     data.contributors.forEach(contributor => {
-        // Check if sphere already exists for contributor
-        const sphereExists = scene.getObjectByName(`sphere-${contributor.contributorId}`)
+        // Check if cell already exists for contributor
+        const cellExists = scene.getObjectByName(`cell-${contributor.contributorId}`)
         
-        // If sphere doesn't exist
-        if (!sphereExists) {
+        // If cell doesn't exist
+        if (!cellExists) {
             // Load skin cell
             // gltfLoader.load('/skincell/scene.gltf', (gltfScene) => {
 
@@ -471,6 +487,19 @@ gltfLoader3.load('/skin/skinTest.gltf', (gltfScene) => {
                 meshCell.fixedX = meshCell.position.x.valueOf()
                 meshCell.fixedY = meshCell.position.y.valueOf()
                 meshCell.fixedZ = meshCell.position.z.valueOf()
+
+                // meshCell.userData = { hover: false };
+
+                // meshCell.addEventListener('mouseover', function(event) {
+                //     textBox.textContent = JSON.stringify(meshCell.data); // Show JSON data in the textBox
+                //     textBox.style.display = 'block';
+                //     meshCell.userData.hover = true;
+                // });
+
+                // meshCell.addEventListener('mouseout', function(event) {
+                //     textBox.style.display = 'none'; // Hide the textBox
+                //     meshCell.userData.hover = false;
+                // });
 
                 secondaryModel.add(meshCell);
             })
@@ -642,7 +671,7 @@ const mouse = new THREE.Vector2();
 
 var intersectedObject = null;
 
-let selectedSphere = null;
+let selectedCell = null;
 
 function onMouseMove(event) {
     // calculate mouse position in normalized device coordinates
@@ -664,15 +693,15 @@ function onMouseMove(event) {
     // get the first intersection
     const intersection = intersects[0];
     // get the selected sphere
-    selectedSphere = intersection.object;
+    selectedCell = intersection.object;
     // set the sphere's position to a jittered position
-    // selectedSphere.position.x = getRandomArbitrary(selectedSphere.fixedX - 0.01, selectedSphere.fixedX + 0.01)
-    // selectedSphere.position.y = getRandomArbitrary(selectedSphere.fixedY - 0.01, selectedSphere.fixedY + 0.01)
-    // selectedSphere.position.z = getRandomArbitrary(selectedSphere.fixedZ - 0.000001, selectedSphere.fixedZ + 0.000001)
-    console.log(selectedSphere.position)
+    // selectedCell.position.x = getRandomArbitrary(selectedCell.fixedX - 0.01, selectedCell.fixedX + 0.01)
+    // selectedCell.position.y = getRandomArbitrary(selectedCell.fixedY - 0.01, selectedCell.fixedY + 0.01)
+    // selectedCell.position.z = getRandomArbitrary(selectedCell.fixedZ - 0.000001, selectedCell.fixedZ + 0.000001)
+    console.log(selectedCell.position)
   } else {
     // reset the selected sphere
-    selectedSphere = null;
+    selectedCell = null;
   }
 }
 

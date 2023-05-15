@@ -9,11 +9,23 @@ body
 {
     height: 100vh;
     font-family: 'Poppins';
-    background: rgb(24, 24, 24);
+    /* background: rgb(24, 24, 24); */
 }
 
 @import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+
+#background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #dfd2ac;
+  opacity: 0;
+  animation: fade-in 2s forwards;
+  z-index: -1;
+}
 
 #title {
   position: absolute;
@@ -22,9 +34,9 @@ body
   align-items: center;
   justify-content: center;
   /* height: 100vh; */
-  color: #b1b0a0;
-  font-size: 200px;
-  font-family: 'Muli', sans-serif;
+  color: #3a5231;
+  font-size: 300px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
   opacity: 0;
   animation: fade-in 2s forwards;
 }
@@ -83,14 +95,14 @@ body
   
   #menu {
     position: fixed;
-    top: 0;
-    right: 0;
-    width: 200px;
-    height: 100%;
-    background-color: #f1f1f1;
-    transform: translateX(200px);
-    transition: transform 0.3s ease-in-out;
-    z-index: 9998;
+    top: 20px;
+    right: 80px;
+    width: 230px;
+    height: 20%;
+    background-color: #dfd2ac;
+    border-radius: 10px;
+    display: none;
+    z-index: 9999;
   }
   
   #menu ul {
@@ -102,6 +114,11 @@ body
   #menu li {
     padding: 10px;
     border-bottom: 1px solid #ccc;
+  }
+
+  #menu li a {
+    font-family: 'Muli', sans-serif;
+    color: #3a5231;
   }
   
   #menu li:last-child {
@@ -189,7 +206,7 @@ body
   position: fixed;
   top: 20px;
   right: 80px;
-  z-index: 9999;
+  z-index: 9998;
 }
 
 #data-tabs {
