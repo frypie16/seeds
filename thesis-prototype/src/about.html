@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+
+        body {
+            font-family: 'Muli', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .title {
+            font-family: 'Muli', sans-serif;
+            font-size: 132px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            letter-spacing: -10px;
+        }
+
+        .columns {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .column {
+            flex-basis: 48%;
+        }
+
+        .column img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 50%;
+        }
+
+        .column p {
+            line-height: 1.5;
+        }
+
+        .back-button {
+            position: fixed;
+            bottom: 0px;
+            right: 20px;
+            font-size: 100px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">ABOUT</h1>
+        <div class="columns">
+            <div class="column">
+                <img src="your_picture.jpg" alt="Your Picture">
+                <p>About Me:</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu leo vitae lectus porta suscipit et ac quam. Sed venenatis metus vitae risus congue fringilla. Quisque ut odio non massa rhoncus commodo.</p>
+            </div>
+            <div class="column">
+                <p>About the Data Visualization:</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu leo vitae lectus porta suscipit et ac quam. Sed venenatis metus vitae risus congue fringilla. Quisque ut odio non massa rhoncus commodo. Curabitur feugiat rutrum elit vel consectetur. Vestibulum porta turpis vitae ligula posuere facilisis.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu leo vitae lectus porta suscipit et ac quam. Sed venenatis metus vitae risus congue fringilla. Quisque ut odio non massa rhoncus commodo.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="back-button" onclick="window.location.href = 'index.html'">&#8617;</div>
+</body>
+</html>
