@@ -150,6 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
   homeButton.style.opacity = "0";
   menuButton.style.opacity = "0";
   conceptButton.style.opacity = "0";
+  dataContainer.style.display = "none";
 
   function displayText() {
     if (index < text.length) {
@@ -215,6 +216,7 @@ goButton.addEventListener('click', toggleOverlay);
 
 var contributors = data.contributors;
 var totalContributors = contributors.length;
+var dataContainer = document.getElementById("data-container");
 
 //Gender calculations
 var femaleCount = contributors.filter(function (contributor) {
@@ -858,6 +860,7 @@ const tick = () => {
       skinModel.visible = false;
       secondaryModel.visible = true;
       controls.target.copy(secondaryModel.position);
+      dataContainer.style.display = "block";
       isViewingGolgi = true;
     }
 
@@ -867,6 +870,7 @@ const tick = () => {
       skinModel.visible = true;
       secondaryModel.visible = false;
       controls.target.copy(skinModel.position);
+      dataContainer.style.display = "none";
       isViewingGolgi = false;
     }
   }
