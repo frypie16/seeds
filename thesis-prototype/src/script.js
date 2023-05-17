@@ -307,7 +307,7 @@ function toggleData(dataType) {
     raceTab.classList.remove("active-tab");
   } else if (dataType === "race") {
     genderBox.classList.remove("active");
-    raceBox.classList.add("active");
+    raceBox.classList.add("active"); // Add the 'active' class
     genderTab.classList.remove("active-tab");
     raceTab.classList.add("active-tab");
 
@@ -315,6 +315,16 @@ function toggleData(dataType) {
     updateRaceBars();
   }
 }
+
+var genderTab = document.getElementsByClassName("tab")[0];
+genderTab.addEventListener("click", function() {
+  toggleData("gender");
+});
+
+var raceTab = document.getElementsByClassName("tab")[1];
+raceTab.addEventListener("click", function() {
+  toggleData("race");
+});
 
 // Scene
 const scene = new THREE.Scene()

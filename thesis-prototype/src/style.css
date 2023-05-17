@@ -258,6 +258,11 @@ body
   min-width: 0; /* Added to allow flex items to shrink */
 }
 
+#race-bar-container .column {
+  flex-basis: 50%; /* Updated to 50% to accommodate two columns */
+  min-width: 0; /* Added to allow flex items to shrink */
+}
+
 .bar-container {
   display: flex;
 }
