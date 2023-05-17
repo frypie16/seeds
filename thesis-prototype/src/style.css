@@ -248,7 +248,14 @@ body
 
 #gender-bar-container,
 #race-bar-container {
-  height: 60px;
+  height: auto; /* Adjusted to auto */
+  display: flex; /* Added flex to allow for wrapping */
+  flex-wrap: wrap; /* Added wrap to wrap the bars */
+}
+
+#gender-bar-container .column {
+  flex-basis: 50%; /* Updated to 50% to accommodate two columns */
+  min-width: 0; /* Added to allow flex items to shrink */
 }
 
 .bar-container {
@@ -278,7 +285,7 @@ body
 #gender-bar-variant,
 #gender-bar-prefer-not,
 #gender-bar-other {
-  height: 17%;
+  height: 9.7%;
   margin-bottom: 5px;
   background-color: #6a9671;
   border-radius: 10px;

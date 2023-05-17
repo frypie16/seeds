@@ -477,7 +477,7 @@ gltfLoader3.load('/testskin/scene.gltf', (gltfScene) => {
         // var boxCell = new THREE.Box3().setFromObject( meshCell );
         // boxCell.center( meshCell.position ); // this re-sets the mesh position
         // meshCell.position.multiplyScalar( - 1 );
-        meshCell.scale.set(0.02, 0.02, 0.02);
+        // meshCell.scale.set(0.02, 0.02, 0.02);
 
         meshCell.name = `cell-${contributor.contributorId}`;
         meshCell.data = data.contributors[contributor.contributorId - 1]
