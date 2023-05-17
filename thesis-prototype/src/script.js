@@ -13,136 +13,13 @@ var canvas = document.querySelector('canvas.webgl')
 let textBox = document.getElementById('box')
 
 // UI Elements
-/*
-document.addEventListener("DOMContentLoaded", function() {
-    const title = document.getElementById("title");
-    const text = "SEEDS";
-    let index = 0;
-  
-    function displayText() {
-      if (index < text.length) {
-        title.innerHTML += text.charAt(index);
-        index++;
-        setTimeout(displayText, 200); // Adjust the delay between letters here
-      } else {
-        setTimeout(() => {
-          title.classList.add("fade-out");
-          loadElements(); // Load the additional HTML elements
-        }, 1000); // Adjust the delay before fading out here
-      }
-    }
-  
-    // Delay before animation starts
-    setTimeout(displayText, 1000); // Adjust the delay before the first letter appears here
-  
-    function loadElements() {
-      const header = document.createElement("header");
-      header.innerHTML = `
-        <button id="menu-button">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <button id="conceptButton">CONCEPT</button>
-      `;
-      document.body.appendChild(header);
-  
-      const canvas = document.createElement("canvas");
-      canvas.classList.add("webgl");
-      document.body.appendChild(canvas);
-  
-      const homeButton = document.createElement("div");
-      homeButton.id = "home-button";
-      homeButton.innerText = "⌂";
-      document.body.appendChild(homeButton);
-  
-      const menu = document.createElement("div");
-      menu.id = "menu";
-      menu.innerHTML = `
-        <ul>
-          <li><a href="#">About</a></li>
-          <li><a href="#">The Data</a></li>
-          <li><a href="#">Contribute</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      `;
-      document.body.appendChild(menu);
-  
-      const overlay = document.createElement("div");
-      overlay.id = "overlay";
-      overlay.innerHTML = `
-        <div id="overlayContent">
-          <button id="closeButton">x</button>
-          <p>Step into the enchanting greenhouse of "Seeds." 
-            Uncover the hidden stories of misdiagnoses in healthcare 
-            as you guide patients to nurture their silenced experiences. 
-            With each tale explored, watch as plants sprout from the seeds, 
-            adorning the once-bare mannequin. Together, we cultivate empathy, 
-            accountability, and a more just future. Join "Seeds" and breathe 
-            life into the voices that deserve to be heard.</p>
-          <button id="goButton">GO →</button>
-        </div>
-      `;
-      document.body.appendChild(overlay);
-  
-      const dataContainer = document.createElement("div");
-      dataContainer.id = "data-container";
-      dataContainer.innerHTML = `
-        <div id="data-tabs">
-          <div class="tab active-tab" onclick="toggleData('gender')">Gender</div>
-          <div class="tab" onclick="toggleData('race')">Race</div>
-        </div>
-  
-        <div id="gender-box" class="active">
-          <div id="gender-bar-container" class="bar-container">
-            <div class="column">
-              <div class="bar-label">Female</div>
-              <div class="bar-label">Male</div>
-              <div class="bar-label">Trans-male</div>
-              <div class="bar-label">Trans-female</div>
-              <div class="bar-label">Gender-variant</div>
-              <div class="bar-label">Prefer not to say</div>
-              <div class="bar-label">Other</div>
-              </div>
-              <div class="column">
-                <div id="gender-bar-female"></div>
-                <div id="gender-bar-male"></div>
-                <div id="gender-bar-trans-male"></div>
-                <div id="gender-bar-trans-female"></div>
-                <div id="gender-bar-variant"></div>
-                <div id="gender-bar-prefer-not"></div>
-                <div id="gender-bar-other"></div>
-              </div>
-            </div>
-          </div>
-    
-          <div id="race-box">
-            <div id="race-bar-container" class="bar-container">
-              <div class="column">
-                <div class="bar-label">South Asian</div>
-                <div class="bar-label">White</div>
-              </div>
-              <div class="column">
-                <div id="race-bar-south-asian"></div>
-                <div id="race-bar-white"></div>
-              </div>
-            </div>
-          </div>
-        `;
-        document.body.appendChild(dataContainer);
-    
-        const box = document.createElement("div");
-        box.id = "box";
-        box.style.display = "none";
-        document.body.appendChild(box);
-      }
-    });
-*/
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const background = document.getElementById("background");
   const title = document.getElementById("title");
   const canvas = document.querySelector(".webgl");
+  var topText = document.getElementById("top-text");
   const text = "SEEDS";
   let index = 0;
 
@@ -151,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
   menuButton.style.opacity = "0";
   conceptButton.style.opacity = "0";
   dataContainer.style.display = "none";
+  topText.style.display = "none";
 
   function displayText() {
     if (index < text.length) {
@@ -166,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
           homeButton.style.opacity = "1";
           menuButton.style.opacity = "1";
           conceptButton.style.opacity = "1";
+          topText.style.display = "block";
           canvas.style.animation = "fade-in 3s forwards";
         }, 1000);
       }, 1000);
@@ -553,16 +432,19 @@ gltfLoader3.load('/testskin/scene.gltf', (gltfScene) => {
         // var boxCell = new THREE.Box3().setFromObject( meshCell );
         // boxCell.center( meshCell.position ); // this re-sets the mesh position
         // meshCell.position.multiplyScalar( - 1 );
-        // meshCell.scale.set(0.02, 0.02, 0.02);
+        meshCell.scale.set(1.2, 1.4, 1.2);
 
         meshCell.name = `cell-${contributor.contributorId}`;
+        meshCell.contributorId = contributor.contributorId;
         meshCell.data = data.contributors[contributor.contributorId - 1]
-        meshCell.position.x = THREE.MathUtils.randFloat(box.min.x, box.max.x);
-        meshCell.position.y = THREE.MathUtils.randFloat(box.min.y / 20 - 1.45, box.max.y / 20 - 1.45);
-        meshCell.position.z = THREE.MathUtils.randFloat(box.min.z, box.max.z);
+        meshCell.position.x = THREE.MathUtils.randFloat(box.min.x + 2, box.max.x - 2);
+        meshCell.position.y = THREE.MathUtils.randFloat(box.min.y / 25 - 1.35, box.max.y / 25 - 1.35);
+        meshCell.position.z = THREE.MathUtils.randFloat(box.min.z + 2, box.max.z - 2);
         meshCell.fixedX = meshCell.position.x.valueOf()
         meshCell.fixedY = meshCell.position.y.valueOf()
         meshCell.fixedZ = meshCell.position.z.valueOf()
+
+        
 
         // meshCell.userData = { hover: false };
 
@@ -578,7 +460,24 @@ gltfLoader3.load('/testskin/scene.gltf', (gltfScene) => {
         // });
 
         secondaryModel.add(meshCell);
+
+
+        gltfLoader.load('/plant/scene.gltf', (gltfScene) => {
+          var meshPlant = gltfScene.scene;
+          meshPlant.visible = false
+          meshPlant.scale.set(0.001, 0.001, 0.001)
+          meshPlant.name = `${contributor.contributorId}-plant`
+          meshPlant.position.x = meshCell.position.x
+          meshPlant.position.y = -0.9
+          meshPlant.position.z = meshCell.position.z + 0.2
+          secondaryModel.add(meshPlant);
+      
+        })
       })
+
+      
+
+
 
       // Create sphere
 
@@ -747,6 +646,7 @@ const mouse = new THREE.Vector2();
 var intersectedObject = null;
 
 let selectedCell = null;
+let selectedCellPlant = null;
 
 function onMouseMove(event) {
   // calculate mouse position in normalized device coordinates
@@ -761,14 +661,19 @@ function onMouseMove(event) {
 
   // calculate objects intersecting the picking ray
   const cells = secondaryModel.children.filter(child => child.name.includes('cell'));
+
   const intersects = raycaster.intersectObjects(cells, true);
 
   // if there are intersections
   if (intersects.length > 0 && isViewingGolgi) {
     // get the first intersection
     const intersection = intersects[0];
+
     // get the selected sphere
-    selectedCell = intersection.object.parent;
+    selectedCell = intersection.object.parent.parent.parent.parent.parent.parent.parent;
+    const cellplants  = secondaryModel.children.filter(child => child.name === `${selectedCell.contributorId}-plant`);
+    selectedCellPlant = cellplants[0]
+
     //textBox.innerHTML = `Race: ${intersectedObject.data.race} <br> Gender: ${intersectedObject.data.gender} <br> Age: ${intersectedObject.data.age} <br> Location: ${intersectedObject.data.location} <br> Story: ${intersectedObject.data.story}`;
 
     // set the sphere's position to a jittered position
@@ -777,6 +682,7 @@ function onMouseMove(event) {
   } else {
     // reset the selected sphere
     selectedCell = null;
+    selectedCellPlant = null;
   }
 }
 
@@ -841,6 +747,7 @@ const clock = new THREE.Clock()
 var selectedChild = undefined;
 var isViewingGolgi = false;
 
+
 const tick = () => {
 
   const elapsedTime = clock.getElapsedTime()
@@ -877,17 +784,27 @@ const tick = () => {
 
   if (selectedCell != undefined) {
     selectedCell.position.x = getRandomArbitrary(selectedCell.fixedX - 0.01, selectedCell.fixedX + 0.01)
-    if (selectedCell.position.y > -0.83) {
-      selectedCell.position.y = getRandomArbitrary(-0.82, -0.84)
+    if (selectedCell.position.y > -.96) {
+      selectedCell.position.y = getRandomArbitrary(-0.95, -0.97)
     } else {
       selectedCell.position.y = selectedCell.position.y + .01
     }
     selectedCell.position.z = getRandomArbitrary(selectedCell.fixedZ - 0.01, selectedCell.fixedZ + 0.01)
     textBox.innerHTML = `Race: ${selectedCell.data.race} <br> Gender: ${selectedCell.data.gender} <br> Age: ${selectedCell.data.age} <br> Location: ${selectedCell.data.location} <br> Story: ${selectedCell.data.story}`;
     textBox.style.display = 'block'
+    if (selectedCellPlant != undefined) {
+      if (selectedCell.position.y > -.97) {
+        selectedCellPlant.visible = true
+        if ( selectedCellPlant.scale.x < 0.02 ) {
+          selectedCellPlant.scale.set(selectedCellPlant.scale.x + 0.0001, selectedCellPlant.scale.y + 0.0001, selectedCellPlant.scale.z + 0.0001)
+        }
+      }
+    }
   } else {
     textBox.style.display = 'none'
   }
+
+ 
 
   // Update raycaster based on the current mouse position and camera
 
