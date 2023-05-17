@@ -276,6 +276,34 @@ genderBarOther.style.width = otherPercentage + "%";
 
 //Race calculations
 function updateRaceBars() {
+  var blackCount = contributors.filter(function (contributor) {
+    return contributor.race === "Black or African American";
+  }).length;
+
+  var centralAsianCount = contributors.filter(function (contributor) {
+    return contributor.race === "Central Asian";
+  }).length;
+
+  var eastAsianCount = contributors.filter(function (contributor) {
+    return contributor.race === "East Asian";
+  }).length;
+
+  var hispanicCount = contributors.filter(function (contributor) {
+    return contributor.race === "Hispanic, Latin American or Latino";
+  }).length;
+
+  var middleEasternCount = contributors.filter(function (contributor) {
+    return contributor.race === "Middle Eastern";
+  }).length;
+
+  var pacificCount = contributors.filter(function (contributor) {
+    return contributor.race === "Native Hawaiian or Other Pacific Islander";
+  }).length;
+
+  var southeastAsianCount = contributors.filter(function (contributor) {
+    return contributor.race === "Southeast Asian";
+  }).length;
+
   var southAsianCount = contributors.filter(function (contributor) {
     return contributor.race === "South Asian";
   }).length;
@@ -284,14 +312,50 @@ function updateRaceBars() {
     return contributor.race === "White";
   }).length;
 
+  var preferNotCount = contributors.filter(function (contributor) {
+    return contributor.race === "Prefer not to say";
+  }).length;
+
+  var blackPercentage = (blackCount / totalContributors) * 100;
+  var centralAsianPercentage = (centralAsianCount / totalContributors) * 100;
+  var eastAsianPercentage = (eastAsianCount / totalContributors) * 100;
+  var hispanicPercentage = (hispanicCount / totalContributors) * 100;
+  var middleEasternPercentage = (middleEasternCount / totalContributors) * 100;
+  var pacificPercentage = (pacificCount / totalContributors) * 100;
+  var southeastAsianPercentage = (southeastAsianCount / totalContributors) * 100;
   var southAsianPercentage = (southAsianCount / totalContributors) * 100;
   var whitePercentage = (whiteCount / totalContributors) * 100;
+  var preferNotPercentage = (preferNotCount / totalContributors) * 100;
+
+  var raceBarBlack = document.getElementById("race-bar-black");
+  raceBarBlack.style.width = blackPercentage + "%";
+
+  var raceBarCentralAsian = document.getElementById("race-bar-central-asian");
+  raceBarCentralAsian.style.width = centralAsianPercentage + "%";
+
+  var raceBarEastAsian = document.getElementById("race-bar-east-asian");
+  raceBarEastAsian.style.width = eastAsianPercentage + "%";
+
+  var raceBarHispanic = document.getElementById("race-bar-hispanic");
+  raceBarHispanic.style.width = hispanicPercentage + "%";
+
+  var raceBarMiddleEastern = document.getElementById("race-bar-middle-eastern");
+  raceBarMiddleEastern.style.width = middleEasternPercentage + "%";
+
+  var raceBarPacific = document.getElementById("race-bar-pacific");
+  raceBarPacific.style.width = pacificPercentage + "%";
+
+  var raceBarSoutheastAsian = document.getElementById("race-bar-southeast-asian");
+  raceBarSoutheastAsian.style.width = southeastAsianPercentage + "%";
 
   var raceBarSouthAsian = document.getElementById("race-bar-south-asian");
   raceBarSouthAsian.style.width = southAsianPercentage + "%";
 
   var raceBarWhite = document.getElementById("race-bar-white");
   raceBarWhite.style.width = whitePercentage + "%";
+
+  var raceBarPreferNot = document.getElementById("race-bar-prefer-not");
+  raceBarPreferNot.style.width = preferNotPercentage + "%";
 }
 
 function toggleData(dataType) {

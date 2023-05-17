@@ -232,13 +232,20 @@ body
 #gender-box,
 #race-box {
   width: 200px;
-  height: 100px;
   background-color: #eee;
   border: 1px solid #ccc;
   border-radius: 0px 0px 5px 5px;
   padding: 10px;
   display: none;
   margin-bottom: 10px;
+}
+
+#gender-box {
+  height: 100px;
+}
+
+#race-box {
+  height: 145px;
 }
 
 #gender-box.active,
@@ -296,9 +303,17 @@ body
   border-radius: 10px;
 }
 
+#race-bar-black,
+#race-bar-central-asian,
+#race-bar-east-asian,
+#race-bar-hispanic,
+#race-bar-middle-eastern,
+#race-bar-pacific,
+#race-bar-southeast-asian,
 #race-bar-south-asian,
-#race-bar-white {
-  height: 17%;
+#race-bar-white,
+#race-bar-prefer-not {
+  height: 6.7%;
   margin-bottom: 5px;
   background-color: #96856a;
   border-radius: 10px;
