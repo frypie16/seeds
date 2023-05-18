@@ -353,12 +353,15 @@ scene.add(secondaryModel);
 //Skin Model
 const gltfLoader3 = new GLTFLoader();
 const lod = new THREE.LOD();
-gltfLoader3.load('/testskin/scene.gltf', (gltfScene) => {
+gltfLoader3.load('/skin2/skin.gltf', (gltfScene) => {
   var mesh = gltfScene.scene;
   var box = new THREE.Box3();
   box.setFromObject(mesh);
   box.center(mesh.position); // this re-sets the mesh position
   mesh.position.multiplyScalar(- 1);
+
+  mesh.position.y = -1;
+  mesh.scale.set(1.5, 1.5, 1.5);
 
   // Depth test to load model parts correctly
   mesh.traverse((node) => {
@@ -502,18 +505,23 @@ gltfLoader3.load('/testskin/scene.gltf', (gltfScene) => {
   });
 });
 
-// const gltfLoader4 = new GLTFLoader();
-// gltfLoader4.load('/plant/scene.gltf', (gltfScene) => {
-//     var mesh = gltfScene.scene;
-//     var box = new THREE.Box3().setFromObject( mesh );
-//     box.center( mesh.position ); // this re-sets the mesh position
-//     mesh.position.multiplyScalar( - 1 );
+const gltfLoader4 = new GLTFLoader();
+gltfLoader4.load('/hair/hair.gltf', (gltfScene) => {
+    var mesh = gltfScene.scene;
+    var box = new THREE.Box3().setFromObject( mesh );
+    box.center( mesh.position ); // this re-sets the mesh position
+    mesh.position.multiplyScalar( - 1 );
 
-//     // mesh.rotateY(-Math.PI / 2);
-//     // mesh.position.x = 44;
+    mesh.position.y = -1.2; //up & down
+    mesh.position.z = 1;
+    mesh.position.x = 0.5;
+    mesh.scale.set(0.4, 0.4, 0.4);
 
-//     // secondaryModel.add(mesh);
-// });
+    // mesh.rotateY(-Math.PI / 2);
+    // mesh.position.x = 44;
+
+    secondaryModel.add(mesh);
+});
 
 
 // Lights
