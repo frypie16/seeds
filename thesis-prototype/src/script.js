@@ -11,6 +11,7 @@ import * as data from '../diagnosis_stories.json'
 // Canvas
 var canvas = document.querySelector('canvas.webgl')
 let textBox = document.getElementById('box')
+let topTextBox = document.getElementById('top-text')
 
 // UI Elements
 
@@ -262,12 +263,12 @@ function toggleData(dataType) {
 }
 
 var genderTab = document.getElementsByClassName("tab")[0];
-genderTab.addEventListener("click", function() {
+genderTab.addEventListener("click", function () {
   toggleData("gender");
 });
 
 var raceTab = document.getElementsByClassName("tab")[1];
-raceTab.addEventListener("click", function() {
+raceTab.addEventListener("click", function () {
   toggleData("race");
 });
 
@@ -447,7 +448,7 @@ gltfLoader3.load('/skin2/skin.gltf', (gltfScene) => {
         meshCell.fixedY = meshCell.position.y.valueOf()
         meshCell.fixedZ = meshCell.position.z.valueOf()
 
-        
+
 
         // meshCell.userData = { hover: false };
 
@@ -470,15 +471,16 @@ gltfLoader3.load('/skin2/skin.gltf', (gltfScene) => {
           meshPlant.visible = false
           meshPlant.scale.set(0.001, 0.001, 0.001)
           meshPlant.name = `${contributor.contributorId}-plant`
+          meshPlant.grown = false;
           meshPlant.position.x = meshCell.position.x
           meshPlant.position.y = -0.9
           meshPlant.position.z = meshCell.position.z + 0.2
           secondaryModel.add(meshPlant);
-      
+
         })
       })
 
-      
+
 
 
 
@@ -507,20 +509,20 @@ gltfLoader3.load('/skin2/skin.gltf', (gltfScene) => {
 
 const gltfLoader4 = new GLTFLoader();
 gltfLoader4.load('/hair/hair.gltf', (gltfScene) => {
-    var mesh = gltfScene.scene;
-    var box = new THREE.Box3().setFromObject( mesh );
-    box.center( mesh.position ); // this re-sets the mesh position
-    mesh.position.multiplyScalar( - 1 );
+  var mesh = gltfScene.scene;
+  var box = new THREE.Box3().setFromObject(mesh);
+  box.center(mesh.position); // this re-sets the mesh position
+  mesh.position.multiplyScalar(- 1);
 
-    mesh.position.y = -1.2; //up & down
-    mesh.position.z = 1;
-    mesh.position.x = 0.5;
-    mesh.scale.set(0.4, 0.4, 0.4);
+  mesh.position.y = -1.2; //up & down
+  mesh.position.z = 4;
+  mesh.position.x = -5.5;
+  mesh.scale.set(0.3, 0.2, 0.27);
 
-    // mesh.rotateY(-Math.PI / 2);
-    // mesh.position.x = 44;
+  // mesh.rotateY(-Math.PI / 2);
+  // mesh.position.x = 44;
 
-    secondaryModel.add(mesh);
+  secondaryModel.add(mesh);
 });
 
 
@@ -612,19 +614,6 @@ camera.position.y = 0
 camera.position.z = 0
 scene.add(camera)
 
-// Audio
-const listener = new THREE.AudioListener();
-camera.add(listener);
-
-const sound = new THREE.Audio(listener);
-const audioLoader = new THREE.AudioLoader();
-audioLoader.load('/audio/birds.mp3', function (buffer) {
-  sound.setBuffer(buffer);
-  sound.setLoop(true); //set the sound to loop
-  sound.setVolume(1); //set the volume (0 to 1)
-  sound.play();
-});
-
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
@@ -656,11 +645,33 @@ var intersectedObject = null;
 let selectedCell = null;
 let selectedCellPlant = null;
 
+const listener = new THREE.AudioListener();
+
+const sound = new THREE.Audio(listener);
+const sound2 = new THREE.Audio(listener);
+const sound3 = new THREE.Audio(listener);
+
+const audioLoader = new THREE.AudioLoader();
+
+
+
+function onMouseClick(event) {
+  if (!sound.isPlaying) {
+    audioLoader.load('/audio/birds.mp3', function (buffer) {
+      sound.setBuffer(buffer);
+      sound.setLoop(true); //set the sound to loop
+      sound.setVolume(1); //set the volume (0 to 1)
+      sound.play();
+    })
+  }
+}
+
 function onMouseMove(event) {
   // calculate mouse position in normalized device coordinates
   // (-1 to +1) for both components
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
 
 
 
@@ -679,7 +690,7 @@ function onMouseMove(event) {
 
     // get the selected sphere
     selectedCell = intersection.object.parent.parent.parent.parent.parent.parent.parent;
-    const cellplants  = secondaryModel.children.filter(child => child.name === `${selectedCell.contributorId}-plant`);
+    const cellplants = secondaryModel.children.filter(child => child.name === `${selectedCell.contributorId}-plant`);
     selectedCellPlant = cellplants[0]
 
     //textBox.innerHTML = `Race: ${intersectedObject.data.race} <br> Gender: ${intersectedObject.data.gender} <br> Age: ${intersectedObject.data.age} <br> Location: ${intersectedObject.data.location} <br> Story: ${intersectedObject.data.story}`;
@@ -711,14 +722,14 @@ function onWindowResize() {
 }
 
 window.addEventListener('mousemove', onMouseMove, false);
-//window.addEventListener('click', onMouseClick, false);
+window.addEventListener('click', onMouseClick, false);
 
 window.addEventListener("resize", onWindowResize, false);
 
 // Set box position to be mouse position
 document.addEventListener('mousemove', (event) => {
   textBox.style.left = `${event.clientX}px`;
-  textBox.style.top = `${event.clientY- textBox.offsetHeight/2}px`;
+  textBox.style.top = `${event.clientY - textBox.offsetHeight / 2}px`;
 });
 
 // Make box appear if intersectedObject
@@ -767,7 +778,7 @@ const tick = () => {
   controls.update()
   if (controls.target.distanceTo(skinModel.position) === 0) {
     // Rotate Skin Model
-    // skinModel.rotation.y = .05 * elapsedTime
+    skinModel.rotation.y = .05 * elapsedTime
 
     // Switch visibility and target depending on distance from camera
     const distance = camera.position.distanceTo(skinModel.position)
@@ -777,6 +788,7 @@ const tick = () => {
       controls.target.copy(secondaryModel.position);
       dataContainer.style.display = "block";
       isViewingGolgi = true;
+      topTextBox.innerHTML = `Seek and hover over seeds to reveal data.`
     }
 
   } else if (controls.target.distanceTo(secondaryModel.position) === 0) {
@@ -787,32 +799,70 @@ const tick = () => {
       controls.target.copy(skinModel.position);
       dataContainer.style.display = "none";
       isViewingGolgi = false;
+      topTextBox.innerHTML = `Click and drag to view from different angles.<br>Scroll to enter mannequin's skin.<br>Click to play audio.`
     }
   }
 
   if (selectedCell != undefined) {
-    selectedCell.position.x = getRandomArbitrary(selectedCell.fixedX - 0.01, selectedCell.fixedX + 0.01)
-    if (selectedCell.position.y > -.96) {
-      selectedCell.position.y = getRandomArbitrary(-0.95, -0.97)
+
+    if (selectedCellPlant && selectedCellPlant.grown) {
     } else {
-      selectedCell.position.y = selectedCell.position.y + .01
+      selectedCell.position.x = getRandomArbitrary(selectedCell.fixedX - 0.01, selectedCell.fixedX + 0.01)
+      selectedCell.position.z = getRandomArbitrary(selectedCell.fixedZ - 0.01, selectedCell.fixedZ + 0.01)
+      if (selectedCell.position.y > -.96) {
+
+        selectedCell.position.y = getRandomArbitrary(-0.95, -0.97)
+
+      } else {
+        if (!sound2.isPlaying) {
+          audioLoader.load('/audio/hoverseed.mp3', function (buffer) {
+            sound2.setBuffer(buffer);
+            sound2.setLoop(true); //set the sound to loop
+            sound2.setVolume(1); //set the volume (0 to 1)
+            sound2.play();
+          })
+        }
+        selectedCell.position.y = selectedCell.position.y + .01
+      }
     }
-    selectedCell.position.z = getRandomArbitrary(selectedCell.fixedZ - 0.01, selectedCell.fixedZ + 0.01)
+
     textBox.innerHTML = `Race: ${selectedCell.data.race} <br> Gender: ${selectedCell.data.gender} <br> Age: ${selectedCell.data.age} <br> Location: ${selectedCell.data.location} <br> Story: ${selectedCell.data.story}`;
     textBox.style.display = 'block'
     if (selectedCellPlant != undefined) {
       if (selectedCell.position.y > -.97) {
         selectedCellPlant.visible = true
-        if ( selectedCellPlant.scale.x < 0.02 ) {
+        if (selectedCellPlant.scale.x < 0.02) {
+          if (!sound3.isPlaying) {
+            audioLoader.load('/audio/plantgrow.mp3', function (buffer) {
+              sound3.setBuffer(buffer);
+              sound3.setLoop(true); //set the sound to loop
+              sound3.setVolume(4); //set the volume (0 to 1)
+              sound3.play();
+            })
+          }
           selectedCellPlant.scale.set(selectedCellPlant.scale.x + 0.0001, selectedCellPlant.scale.y + 0.0001, selectedCellPlant.scale.z + 0.0001)
+        } else {
+          selectedCellPlant.grown = true
+          if (sound2.isPlaying) {
+            sound2.stop()
+          }
+          if (sound3.isPlaying) {
+            sound3.stop()
+          }
         }
       }
     }
   } else {
-    textBox.style.display = 'none'
+    textBox.style.display = 'none';
+    if (sound2.isPlaying) {
+      sound2.stop()
+    }
+    if (sound3.isPlaying) {
+      sound3.stop()
+    }
   }
 
- 
+
 
   // Update raycaster based on the current mouse position and camera
 
