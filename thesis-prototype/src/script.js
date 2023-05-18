@@ -442,7 +442,7 @@ gltfLoader3.load('/skin2/skin.gltf', (gltfScene) => {
         meshCell.contributorId = contributor.contributorId;
         meshCell.data = data.contributors[contributor.contributorId - 1]
         meshCell.position.x = THREE.MathUtils.randFloat(box.min.x + 2, box.max.x - 2);
-        meshCell.position.y = THREE.MathUtils.randFloat(box.min.y / 25 - 1.35, box.max.y / 25 - 1.35);
+        meshCell.position.y = THREE.MathUtils.randFloat(box.min.y / 25 - 1.1, box.max.y / 25 - 1.1);
         meshCell.position.z = THREE.MathUtils.randFloat(box.min.z + 2, box.max.z - 2);
         meshCell.fixedX = meshCell.position.x.valueOf()
         meshCell.fixedY = meshCell.position.y.valueOf()
@@ -755,13 +755,6 @@ function getRandomArbitrary(min, max) {
 }
 
 const clock = new THREE.Clock()
-// let cameraAnimationStartTime = null;
-// const cameraAnimationDuration = 1.5; // seconds
-// const cameraStartPosition = new THREE.Vector3();
-// const cameraStartQuaternion = new THREE.Quaternion();
-// const cameraEndPosition = new THREE.Vector3();
-// const cameraEndQuaternion = new THREE.Quaternion();
-
 
 var selectedChild = undefined;
 var isViewingGolgi = false;
@@ -788,7 +781,7 @@ const tick = () => {
       controls.target.copy(secondaryModel.position);
       dataContainer.style.display = "block";
       isViewingGolgi = true;
-      topTextBox.innerHTML = `Seek and hover over seeds to reveal data.`
+      topTextBox.innerHTML = `Click and drag to seek seeds.<br>Hover over seeds to reveal data.`
     }
 
   } else if (controls.target.distanceTo(secondaryModel.position) === 0) {
