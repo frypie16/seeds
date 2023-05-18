@@ -1,0 +1,358 @@
+@import url(https://fonts.googleapis.com/css?family=Muli&display=swap);
+@import url(https://fonts.googleapis.com/css?family=Quicksand&display=swap);
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body
+{
+    height: 100vh;
+    font-family: 'Poppins';
+    /* background: rgb(24, 24, 24); */
+}
+
+#background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #dfd2ac;
+  opacity: 0;
+  animation: fade-in 2s forwards;
+  z-index: -1;
+}
+
+#title {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* height: 100vh; */
+  color: #3a5231;
+  font-size: 300px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  opacity: 0;
+  animation: fade-in 2s forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+
+#home-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #000;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+}
+
+#menu-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 9999;
+  }
+  
+  #menu-button span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: #000;
+    margin-bottom: 5px;
+  }
+  
+  #menu {
+    position: fixed;
+    top: 20px;
+    right: 80px;
+    width: 230px;
+    height: 21%;
+    background-color: #dfd2ac;
+    border-radius: 10px;
+    display: none;
+    z-index: 9999;
+  }
+  
+  #menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #menu li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  #menu li a {
+    font-family: 'Muli', sans-serif;
+    color: #3a5231;
+  }
+  
+  #menu li:last-child {
+    border-bottom: none;
+  }
+
+#top-text {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 15px;
+  font-family: 'Muli', sans-serif;
+  text-align: center;
+  line-height: 1.5;
+  color:#4f4f4f;
+  opacity: 0.8;
+  width: 70%;
+  padding: 20px 0;
+}
+
+#conceptButton {
+    position: absolute;
+    top: 10px;
+    left: 10px; /* Adjust the left value as needed */
+    z-index: 9999; /* Ensure the button is above other elements */
+    background: none;
+    border: none;
+    padding: 10px;
+    font-family: 'Muli', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #2f6147;
+    cursor: pointer;
+}
+
+#conceptButton:hover {
+    color: rgb(13, 42, 28); /* Change the color on hover */
+}
+
+#overlay {
+    display: none; /* Hide the overlay by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    backdrop-filter: blur(10px); /* Apply the blur effect */
+    z-index: 9998; /* Ensure the overlay is below the button */
+}
+
+#overlayContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(81, 101, 78, 0.9);
+    padding: 50px;
+    max-width: 700px;
+    font-family: 'Quicksand', sans-serif;
+    text-align: center;
+    font-size: 20px;
+    color: rgba(169, 143, 114, 0.9);
+    letter-spacing: 2px;
+    line-height: 2;
+}
+
+#closeButton,
+#goButton {
+    position: absolute;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 18px;
+    color: #888;
+    cursor: pointer;
+}
+
+#closeButton {
+    top: 10px;
+    right: 20px;
+}
+
+#goButton {
+    bottom: 20px;
+    right: 20px;
+}
+
+#closeButton:hover,
+#goButton:hover {
+    color: rgb(13, 42, 28); /* Change the color on hover */
+}
+
+.blurred {
+    filter: blur(10px); /* Apply the blur effect to the canvas */
+}
+
+#data-container {
+  position: fixed;
+  top: 20px;
+  right: 80px;
+  z-index: 9998;
+}
+
+#data-tabs {
+  display: flex;
+  justify-content: center;
+}
+
+.tab {
+  flex-grow: 1;
+  padding: 5px;
+  border-radius: 5px 5px 0px 0px;
+  background-color: #b1b0a0;
+  text-align: center;
+  font-size: 12px;
+  font-family: 'Muli', sans-serif;
+  cursor: pointer;
+}
+
+.active-tab {
+  background-color: #dbc09d;
+}
+
+#gender-box,
+#race-box {
+  width: 200px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 0px 0px 5px 5px;
+  padding: 10px;
+  display: none;
+  margin-bottom: 10px;
+}
+
+#gender-box {
+  height: 100px;
+}
+
+#race-box {
+  height: 145px;
+}
+
+#gender-box.active,
+#race-box.active {
+  display: block;
+}
+
+#gender-bar-container,
+#race-bar-container {
+  height: auto; /* Adjusted to auto */
+  display: flex; /* Added flex to allow for wrapping */
+  flex-wrap: wrap; /* Added wrap to wrap the bars */
+}
+
+#gender-bar-container .column {
+  flex-basis: 50%; /* Updated to 50% to accommodate two columns */
+  min-width: 0; /* Added to allow flex items to shrink */
+}
+
+#race-bar-container .column {
+  flex-basis: 50%; /* Updated to 50% to accommodate two columns */
+  min-width: 0; /* Added to allow flex items to shrink */
+}
+
+.bar-container {
+  display: flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.column:first-child {
+  flex: 1;
+  min-width: max-content;
+}
+
+.bar-label {
+  flex: 1;
+  font-size: 8px;
+  font-family: 'Muli', sans-serif;
+  margin-bottom: 5px;
+}
+
+#gender-bar-female,
+#gender-bar-male,
+#gender-bar-trans-male,
+#gender-bar-trans-female,
+#gender-bar-variant,
+#gender-bar-prefer-not,
+#gender-bar-other {
+  height: 9.7%;
+  margin-bottom: 5px;
+  background-color: #6a9671;
+  border-radius: 10px;
+}
+
+#race-bar-black,
+#race-bar-central-asian,
+#race-bar-east-asian,
+#race-bar-hispanic,
+#race-bar-middle-eastern,
+#race-bar-pacific,
+#race-bar-southeast-asian,
+#race-bar-south-asian,
+#race-bar-white,
+#race-bar-prefer-not {
+  height: 6.7%;
+  margin-bottom: 5px;
+  background-color: #96856a;
+  border-radius: 10px;
+}
+
+.webgl
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
+}
+
+#box {
+    position: absolute;
+    width: 600px;
+    /* height: 100px; */
+    padding: 20px;
+    border-radius: 10px;
+    /* outline: 2px solid #2F4F4F; */
+    box-shadow: 0 0 0 10px #2F4F4F;
+    line-height: 1.5;
+    font-family: Gill Sans, sans-serif;
+    background-color: #F0F8FF;
+    opacity: 0.8;
+  }
+
+/*# sourceMappingURL=main.css.map*/
